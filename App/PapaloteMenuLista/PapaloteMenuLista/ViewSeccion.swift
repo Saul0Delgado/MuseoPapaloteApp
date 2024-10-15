@@ -23,7 +23,7 @@ struct ViewSeccion: View {
                         seccion.image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(height: 300)
+                            .frame(height: 330)
                             .clipped()
                         LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]),
                                        startPoint: .top, endPoint: .bottom)
@@ -48,24 +48,79 @@ struct ViewSeccion: View {
                             .frame(width: UIScreen.main.bounds.width, height: 60)
                             .clipShape(
                                 .rect(
-                                    topLeadingRadius: 50,
+                                    topLeadingRadius: 45,
                                     bottomLeadingRadius: 0,
                                     bottomTrailingRadius: 0,
-                                    topTrailingRadius: 50
+                                    topTrailingRadius: 45
                                 )
                             )
                     }
-                    Color.white
-                        .frame(height: 300)
-
-                    seccion.image
-                    seccion.image
+                    ZStack {
+                        Color.white
+                            
+                        VStack {
+                            HStack {
+                                Text("Exhibiciones\nDivertidas")
+                                    .fontWeight(.bold)
+                                    .font(.largeTitle)
+                                    .multilineTextAlignment(.leading)
+                                    .padding(.bottom,40)
+                                Spacer()
+                            }
+                            .frame(width:UIScreen.main.bounds.width)
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing:25) {
+                                    seccion.color
+                                        .frame(width: 300, height: 180)
+                                        .cornerRadius(30)
+                                    seccion.color
+                                        .frame(width: 300, height: 180)
+                                        .cornerRadius(30)
+                                    seccion.color
+                                        .frame(width: 300, height: 180)
+                                        .cornerRadius(30)
+                                        .padding(.trailing,50)
+                                }
+                                
+                            }
+                            .frame(width:UIScreen.main.bounds.width)
+                        }
+                        .padding(.leading,50)
+                    }
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(width: UIScreen.main.bounds.width, height: 60)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 45,
+                                bottomTrailingRadius: 45,
+                                topTrailingRadius: 0
+                            )
+                        )
+                    
+                    VStack{
+                        HStack{
+                            Text("Déjanos tus\nComentarios")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                            Spacer()
+                        }
+                        .frame(width: UIScreen.main.bounds.width)
+                        .padding(.top,30)
+                        .padding(.leading,50)
+                        
+                        //Form
+                    }
                 }
                 .padding(0)
+                
             }
             .background(Color(seccion.color))
             .ignoresSafeArea()
             .navigationBarBackButtonHidden(true)
+            
             //Top Bar
             .safeAreaInset(edge: .top) {
                 HStack() {
