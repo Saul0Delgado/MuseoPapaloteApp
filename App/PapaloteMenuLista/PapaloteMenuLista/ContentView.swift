@@ -10,11 +10,11 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
-        NavBar_WithListScrollBehind()
+        ListaMapa()
     }
 }
 
-struct NavBar_WithListScrollBehind: View {
+struct ListaMapa: View {
     let secciones : ListaSecciones = ListaSecciones()
     
     let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
@@ -47,13 +47,11 @@ struct NavBar_WithListScrollBehind: View {
                                     Spacer()
                                 }
                             }
-                            .padding()
+                            .frame(height: 70)
                             .background(Color(verdePapalote))
                         }
                         .navigationBarHidden(true)
         }
-
-
     }
 }
 
