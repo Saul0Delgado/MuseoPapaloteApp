@@ -75,7 +75,7 @@ struct ViewSeleccionListaMapa: View {
                         .scaledToFit()
                         .frame(width: 50)
                         .foregroundStyle(.white)
-                        .padding(.trailing,60)
+                        .padding(.trailing,45)
                         .padding(.top, 40)
                 }
             }
