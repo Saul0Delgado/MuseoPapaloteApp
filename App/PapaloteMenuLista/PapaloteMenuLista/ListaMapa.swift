@@ -30,19 +30,10 @@ struct ListaMapa: View {
 					}
 				}
 			}
-			.safeAreaInset(edge: .top) {
-				VStack {
-					HStack() {
-						Spacer()
-						Text("Mapa")
-							.font(.largeTitle.weight(.bold))
-							.foregroundStyle(.white)
-						Spacer()
-					}
-				}
-				.frame(height: 70)
-				.background(Color(verdePapalote))
-			}
+            //Top Bar
+            .safeAreaInset(edge: .top) {
+                PapaloteTopBar(color:Color(verdePapalote), type: .textConBack, text: "Guía")
+            }
 			.navigationBarHidden(true)
 		}
 		.environment(\.colorScheme, .light)
