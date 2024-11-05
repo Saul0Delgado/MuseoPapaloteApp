@@ -54,6 +54,11 @@ struct ViewHomeScreen: View {
                         ScrollView(.horizontal, showsIndicators: false){
                             HStack(spacing: 20) {
                                 
+                                //Espacio Vacío
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .frame(width:leftPadding/2-20)
+                                
                                 //Botón Mapa
                                 Image("HomeScreenButtonMapa")
                                     .resizable()
@@ -75,18 +80,21 @@ struct ViewHomeScreen: View {
                                 }
                                 
                                 //Botón Preguntas
-                                Image("HomeScreenButtonPreguntasFrecuentes")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: elementHeight)
+                                NavigationLink(destination: ViewFAQ()) {
+                                    Image("HomeScreenButtonPreguntasFrecuentes")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: elementHeight)
+                                }
                                 
                                 //Espacio Vacío
                                 Rectangle()
                                     .fill(Color.clear)
-                                    .frame(width:leftPadding-20)
+                                    .frame(width:leftPadding/2-20)
                             }
                         }
                         .padding(.top)
+                        .offset(x:-leftPadding/2)
                         
                         //Conocenos
                         HStack {
@@ -101,16 +109,17 @@ struct ViewHomeScreen: View {
                         ScrollView(.horizontal, showsIndicators: false){
                             HStack(spacing: 20) {
                                 
+                                //Espacio Vacío
                                 Rectangle()
-                                    .foregroundStyle(.clear)
-                                    .frame(width:10)
+                                    .fill(Color.clear)
+                                    .frame(width:leftPadding/2-20)
+                            
                                 
                                 ForEach(noticias) { noticia in
                                     NavigationLink(destination: ViewFeed(article: noticia)) {
                                         ViewFeedMenuItem(article: noticia)
                                     }
                                 }
-                                .offset(x:-30)
                                 
                                 //Espacio Vacío
                                 Rectangle()
@@ -119,6 +128,7 @@ struct ViewHomeScreen: View {
                                 
                             }
                         }
+                        .offset(x:-leftPadding/2)
                         
                         //Espacio para NavBar
                         Rectangle()

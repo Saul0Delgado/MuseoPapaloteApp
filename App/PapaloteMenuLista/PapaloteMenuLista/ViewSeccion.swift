@@ -86,6 +86,11 @@ struct ViewSeccion: View {
                                         
                                         
                                         HStack(spacing:25) {
+                                            
+                                            Rectangle()
+                                                .foregroundStyle(.clear)
+                                                .frame(width:leftPadding/2-20)
+                                            
                                             ForEach(seccion.exhibiciones, id: \.nombre) { item in
                                                 NavigationLink(destination: ViewExhibicion(exhibicion: item)) {
                                                     ZStack {
@@ -131,8 +136,8 @@ struct ViewSeccion: View {
                                                 .frame(width:leftPadding-25)
                                         }
                                     }
-                                    
                                     .frame(width:UIScreen.main.bounds.width)
+                                    .offset(x:-leftPadding/2)
                                 }
                                 .padding(.leading,leftPadding)
                             }
