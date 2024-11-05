@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct ViewHomeScreen: View {
-    let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
+    //let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
+    let verdePapalote = Color.accent
     
     let leftPadding : CGFloat = 50
     let wholeScreen : CGFloat = UIScreen.main.bounds.width
     let elementHeight : CGFloat = 130
+    
+    let noticias = Feed.getArticles()
+    let exhibicionRecomendada = ExhibicionEspecial().getExhibicion()
+    
+    @ObservedObject var colorNavBar = NavBarColor.shared
     
     var body: some View {
         NavigationStack{
@@ -39,11 +45,10 @@ struct ViewHomeScreen: View {
                         }
                         
                         //Exhibicion Recomendada
-                        RoundedRectangle(cornerRadius: 30)
-                            .fill(Color(verdePapalote)
-                                )
-                            .frame(width: wholeScreen-leftPadding, height:elementHeight)
+                        NavigationLink(destination: ViewExhibicion(exhibicion: exhibicionRecomendada)) {
+                            ViewExhibicionMenuItem(exhibicion: exhibicionRecomendada)
                             .offset(x:-leftPadding/2)
+                        }
                         
                         //Menú Carrusel
                         ScrollView(.horizontal, showsIndicators: false){
@@ -96,15 +101,16 @@ struct ViewHomeScreen: View {
                         ScrollView(.horizontal, showsIndicators: false){
                             HStack(spacing: 20) {
                                 
-                                //Noticia PlaceHolder
-                                RoundedRectangle(cornerRadius: 30)
-                                    .fill(Color.teal)
-                                    .frame(width: 280, height:elementHeight)
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(width:10)
                                 
-                                //Noticia PlaceHolder
-                                RoundedRectangle(cornerRadius: 30)
-                                    .fill(Color.teal)
-                                    .frame(width: 280, height:elementHeight)
+                                ForEach(noticias) { noticia in
+                                    NavigationLink(destination: ViewFeed(article: noticia)) {
+                                        ViewFeedMenuItem(article: noticia)
+                                    }
+                                }
+                                .offset(x:-30)
                                 
                                 //Espacio Vacío
                                 Rectangle()
@@ -117,7 +123,7 @@ struct ViewHomeScreen: View {
                         //Espacio para NavBar
                         Rectangle()
                             .fill(Color.clear)
-                            .frame(width:1, height:150)
+                            .frame(width:1, height:120)
                     }
                     .frame(width: wholeScreen)
                     .padding(.leading, leftPadding)
@@ -126,6 +132,9 @@ struct ViewHomeScreen: View {
             //Top Bar
             .safeAreaInset(edge: .top) {
                 PapaloteTopBar(color:Color(verdePapalote), type: .general)
+            }
+            .onAppear{
+                colorNavBar.color = verdePapalote
             }
         }
         .environment(\.colorScheme, .light)

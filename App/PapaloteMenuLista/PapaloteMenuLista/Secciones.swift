@@ -40,6 +40,12 @@ struct Exhibicion: Identifiable {
     let interaccion: [String]
 }
 
+struct ExhibicionEspecial {
+    func getExhibicion() -> Exhibicion {
+        return ListaSecciones().secciones[1].exhibiciones[0]
+    }
+}
+
 //Secciones del Museo
 struct ListaSecciones {
     let secciones: [Seccion] = [
@@ -73,7 +79,7 @@ struct ListaSecciones {
             color: Color(red: 27/255, green: 98/255, blue: 172/255),
             image: Image("img_comunico_tecnologia"),
             desc: "La basura electrónica se reusa, recicla y reduce.",
-            especial: false,
+            especial: true,
             objetivos: ["En esta exhibición, identificarás que los aparatos electrónicos se pueden usar, reciclar y reducir"],
             preguntas: ["¿Qué haces con los aparatos electrónicos que dejan de funcionar?", "¿Conoces el ciclo de vida de los aparatos electrónicos?", "¿Cómo crees que afecta al medio ambiente cuando los residuos electrónicos no se desechan correctamente?"],
             datosCuriosos: ["De acuerdo con la Waste Electrical and Electronic Equipment, 40 millones de toneladas de desechos electrónicos se van a tiraderos a nivel mundial", "Anualmente, en México se produce alrededor de 1.1 millones de toneladas de residuos electrónicos y eléctricos y se estima que para 2026 esta cantidad podría crecer en 17%", "Cada 14 de octubre se celebra el Día Internacional de los Residuos Electrónicos"],

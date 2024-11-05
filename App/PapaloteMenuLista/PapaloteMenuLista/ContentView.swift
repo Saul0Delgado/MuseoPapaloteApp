@@ -8,9 +8,54 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var selectedTab = 0
+    @State var reload: Bool = false
+    
+    @State private var reloadKey = UUID()
+    
+    @ObservedObject var colorNavBar = NavBarColor.shared
     
     var body: some View {
-        Text("Hola")
+        ZStack {
+            Group {
+                switch selectedTab {
+                case 0:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                case 1:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                case 2:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                case 3:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                case 4:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                default:
+                    ViewHomeScreen()
+                        .id(reloadKey)
+                }
+            }
+            .animation(.easeInOut, value: selectedTab)
+            .animation(.easeInOut, value: reloadKey)
+            
+            VStack{
+                Spacer()
+                NavBar(selectedTab: $selectedTab, color: Color.accent, reload: $reload)
+                    .onChange(of: reload) { oldValue, newValue in
+                        if newValue == true {
+                            print("Recargando página", selectedTab)
+                            reload = false
+                            withAnimation {
+                                reloadKey = UUID()
+                            }
+                        }
+                    }
+            }
+        }
     }
 }
 

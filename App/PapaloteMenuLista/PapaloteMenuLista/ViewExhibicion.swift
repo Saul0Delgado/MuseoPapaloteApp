@@ -13,7 +13,7 @@ struct ViewExhibicion: View {
     
     let leftPadding : CGFloat = 50
     
-    let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
+    //let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
     
     @State var rating : Int = 4
     @State var opinion : String = ""
@@ -24,6 +24,8 @@ struct ViewExhibicion: View {
     @State private var showAlert: Bool = false
     @State private var alertTitle : String = ""
     @State private var alertMessage: String = ""
+    
+    @ObservedObject var colorNavBar = NavBarColor.shared
     
     func ShowAlert(alert_message: String, alert_title: String) {
         alertMessage = alert_message
@@ -299,8 +301,12 @@ struct ViewExhibicion: View {
                                 .padding(.leading, leftPadding)
                                 
                                 Rectangle()
-                                    .fill(exhibicion.color)
+                                    .fill(Color.clear)
                                     .frame(width: 1, height:keyboardHeight)
+                                
+                                Rectangle()
+                                    .frame(height:120)
+                                    .foregroundStyle(.clear)
                                 
                             }
                         }
@@ -336,7 +342,10 @@ struct ViewExhibicion: View {
                     )
                 }
             }
-            .onAppear(perform: subscribeToKeyboardNotifications)
+            .onAppear{
+                colorNavBar.color = exhibicion.color
+                subscribeToKeyboardNotifications()
+            }
             .onDisappear(perform: unsubscribeFromKeyboardNotifications)
             .alert(isPresented: $showAlert) {
                 Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))

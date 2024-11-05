@@ -7,13 +7,18 @@
 
 import SwiftUI
 
-struct ViewSeleccionListaMapa: View {
+struct ViewZonaMenuItem: View {
     var color : Color
     var title : String
     var img : Image
+
+    let leftPadding : CGFloat = 50
+    let wholeScreen = UIScreen.main.bounds.width
     
     let height = 130.0
-    let width = 360.0
+    var width : CGFloat {
+        return wholeScreen-leftPadding
+    }
     let bord_radius = 20.0
     
     
@@ -70,20 +75,22 @@ struct ViewSeleccionListaMapa: View {
                     )
                 HStack {
                     Spacer()
-                    Image(systemName: "arrowshape.right.circle.fill")
+                    Image(systemName: "chevron.forward.circle")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 50)
                         .foregroundStyle(.white)
-                        .padding(.trailing,45)
+                        .padding(.trailing,35)
                         .padding(.top, 40)
                 }
             }
         }
+        .padding(.leading, leftPadding)
         .padding(.bottom,20)
+        .offset(x:-leftPadding/2)
     }
 }
 
 #Preview {
-    ViewSeleccionListaMapa(color: Color.orange, title: "Titulo", img: Image("image_placeholder"))
+    ViewZonaMenuItem(color: Color.orange, title: "Titulo", img: Image("image_placeholder"))
 }
