@@ -20,8 +20,8 @@ struct ViewFAQ: View {
                 
                 //Título
                 HStack {
-                    Text("Preguntas Frecuentes")
-                        .font(.title)
+                    Text("Preguntas\nFrecuentes")
+                        .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding(.top, 40)
                         .padding(.leading, leftPadding)

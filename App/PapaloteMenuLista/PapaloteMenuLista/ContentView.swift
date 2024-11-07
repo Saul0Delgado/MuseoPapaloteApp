@@ -23,7 +23,7 @@ struct ContentView: View {
                     ViewHomeScreen()
                         .id(reloadKey)
                 case 1:
-                    ViewHomeScreen()
+                    ViewLogin()
                         .id(reloadKey)
                 case 2:
                     ViewHomeScreen()
@@ -32,7 +32,7 @@ struct ContentView: View {
                     ViewHomeScreen()
                         .id(reloadKey)
                 case 4:
-                    ViewHomeScreen()
+                    ViewUser()
                         .id(reloadKey)
                 default:
                     ViewHomeScreen()
