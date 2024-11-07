@@ -53,6 +53,11 @@ struct Login: View {
     @Binding var showLogin : Bool
     @Binding var showRegister : Bool
     
+    //Para alerta
+    @State var showingAlert : Bool = false
+    @State var AlertTitle : String = ""
+    @State var AlertMessage : String = ""
+    
     var body: some View {
         //Login
         ZStack {
@@ -97,7 +102,21 @@ struct Login: View {
                     .foregroundColor(.black)
                 
                 Button("Iniciar Sesión"){
-                    print("hola")
+                    if email.isEmpty{
+                        //No hay email, enviar error email empty
+                        AlertTitle = "Correo Faltante"
+                        AlertMessage = "Ingrese su correo electrónico, por favor."
+                        showingAlert = true
+                    }
+                    else if password.isEmpty {
+                        //No hay contraseña, enviar error contraseña empty
+                        AlertTitle = "Contraseña Faltante"
+                        AlertMessage = "Ingrese su contraseña, por favor."
+                        showingAlert = true
+                    }
+                    else{
+                        //TODO: Solicitud login a db
+                    }
                 }
                 .padding()
                 .frame(width:250)
@@ -149,6 +168,13 @@ struct Login: View {
                 Spacer()
             }
         }
+        .alert(isPresented: $showingAlert) {
+            Alert(
+                title: Text(AlertTitle),
+                message: Text(AlertMessage),
+                dismissButton: .default(Text("Aceptar"))
+            )
+        }
     }
 }
 
@@ -165,6 +191,11 @@ struct Register: View {
     //Valores para ui
     let wholeScreen = UIScreen.main.bounds.width
     let leftPadding : CGFloat = 25
+    
+    //Para alerta
+    @State var showingAlert : Bool = false
+    @State var AlertTitle : String = ""
+    @State var AlertMessage : String = ""
     
     var body: some View {
         //Login
@@ -186,7 +217,7 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            TextField("Ej. Rocco", text: $email)
+            TextField("Ej. Rocco", text: $nombre)
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
@@ -232,14 +263,52 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            SecureField("Confirma tu Contraseña", text: $password)
+            SecureField("Confirma tu Contraseña", text: $confirmPassword)
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
                 .foregroundColor(.black)
             
             Button("Registrate"){
-                print("Hola")
+                if nombre.isEmpty{
+                    //No hay email, enviar error email empty
+                    AlertTitle = "Nombre Faltante"
+                    AlertMessage = "Ingrese su nombre, por favor."
+                    showingAlert = true
+                }
+                else if email.isEmpty{
+                    //No hay email, enviar error email empty
+                    AlertTitle = "Correo Faltante"
+                    AlertMessage = "Ingrese su correo electrónico, por favor."
+                    showingAlert = true
+                }
+                else if !isValidEmail(email) {
+                    //Email formato incorrecto
+                    AlertTitle = "Correo Electrónico Inválido"
+                    AlertMessage = "Ingrese una dirección de correo válida, por favor."
+                    showingAlert = true
+                }
+                else if password.isEmpty {
+                    //No hay contraseña, enviar error contraseña empty
+                    AlertTitle = "Contraseña Faltante"
+                    AlertMessage = "Ingrese su contraseña, por favor."
+                    showingAlert = true
+                }
+                else if confirmPassword.isEmpty {
+                    //No hay confirmContraseña, enviar error contraseña empty
+                    AlertTitle = "Confirmar Contraseña"
+                    AlertMessage = "Confirme su contraseña, por favor."
+                    showingAlert = true
+                }
+                else if confirmPassword != password {
+                    //No hay confirmContraseña, enviar error contraseña empty
+                    AlertTitle = "Contraseñas Diferentes"
+                    AlertMessage = "Las contraseñas no coinciden, por favor, intente de nuevo."
+                    showingAlert = true
+                }
+                else{
+                    // TODO: Mandar solicitud register a db
+                }
             }
             .padding()
             .frame(width:250)
@@ -249,22 +318,22 @@ struct Register: View {
             .cornerRadius(18)
             .padding(.top,20)
             .padding(.bottom,10)
-        
+            
             
             HStack{
                 Text("¿Ya tienes cuenta?")
                 Button("Inicia Sesión"){
                     withAnimation(.easeOut(duration: 0.3)) {
-                        if showLogin {
-                            showLogin = false
+                        if showRegister {
+                            showRegister = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 withAnimation(.easeIn(duration: 0.3)) {
-                                    showRegister = true
+                                    showLogin = true
                                 }
                             }
                         }
                         else {
-                            showRegister = false
+                            showLogin = false
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 withAnimation(.easeIn(duration: 0.3)) {
                                     showLogin = true
@@ -277,6 +346,22 @@ struct Register: View {
         }
         .frame(width:wholeScreen-leftPadding*2)
         .offset(y:-60)
+        .alert(isPresented: $showingAlert) {
+            Alert(
+                title: Text(AlertTitle),
+                message: Text(AlertMessage),
+                dismissButton: .default(Text("Aceptar"))
+            )
+        }
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        // Expresión regular para validar el formato de un correo electrónico
+        let emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+        
+        // Usamos NSPredicate para verificar si el correo coincide con la expresión regular
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email)
     }
 }
 
@@ -304,68 +389,6 @@ struct Background: View {
         .ignoresSafeArea()
     }
 }
-
-struct nada: View {
-    @State private var showLogin = true
-    @State private var showRegister = false
-    
-    var body: some View {
-        VStack {
-            // Botón para alternar entre cuadrado y círculo
-            Button(action: {
-                withAnimation(.easeOut(duration: 0.15)) {
-                    if showLogin {
-                        showLogin = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                            withAnimation(.easeIn(duration: 0.15)) {
-                                showRegister = true
-                            }
-                        }
-                    }
-                    else {
-                        showRegister = false
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                            withAnimation(.easeIn(duration: 0.15)) {
-                                showLogin = true
-                            }
-                        }
-                    }
-                }
-            }) {
-                Text("Cambiar entre cuadrado y círculo")
-                    .font(.title)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .padding(.top, 100)
-            
-            Spacer()
-            
-            // Si showSquare es true, muestra el cuadrado
-            if showLogin {
-                Rectangle()
-                    .fill(Color.blue)
-                    .frame(width: 200, height: 200)
-                    .transition(.opacity)
-            }
-            
-            // Si showCircle es true, muestra el círculo
-            if showRegister {
-                Circle()
-                    .fill(Color.green)
-                    .frame(width: 200, height: 200)
-                    .transition(.opacity)
-            }
-            
-            Spacer()
-        }
-        .padding()
-    }
-}
-
-
 
 #Preview {
     ViewLogin()
