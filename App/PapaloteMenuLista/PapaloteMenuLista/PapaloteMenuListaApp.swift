@@ -11,7 +11,7 @@ import SwiftUI
 struct PapaloteMenuListaApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ViewLogin()
         }
     }
 }

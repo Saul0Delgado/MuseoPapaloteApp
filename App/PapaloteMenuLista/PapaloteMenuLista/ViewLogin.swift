@@ -10,8 +10,8 @@ import SwiftUI
 struct ViewLogin: View {
     @State private var showAlert: Bool = false
     
-    @State private var showLogin = true
-    @State private var showRegister = false
+    @State private var showLogin = false
+    @State private var showRegister = true
     
     //Valores para ui
     let wholeScreen = UIScreen.main.bounds.width
@@ -37,6 +37,7 @@ struct ViewLogin: View {
                     .frame(width:220)
                     .padding(.bottom,10)
             }
+            .ignoresSafeArea(.keyboard)
         }
     }
 }
@@ -66,6 +67,7 @@ struct Login: View {
                 //Bienvenid@
                 HStack {
                     Text("¡Bienvenid@!")
+                        .foregroundStyle(.black)
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     Spacer()
@@ -76,10 +78,10 @@ struct Login: View {
                 HStack {
                     Text("E-MAIL")
                         .font(.callout)
-                        .foregroundStyle(.gray.opacity(0.7))
+                        .foregroundStyle(.gray.opacity(0.4))
                     Spacer()
                 }
-                TextField(mailPlaceholder, text: $email)
+                TextField("", text: $email, prompt: Text(mailPlaceholder).foregroundStyle(.black.opacity(0.2)))
                     .padding()
                     .background(Color.black.opacity(0.03))
                     .cornerRadius(18)
@@ -92,10 +94,10 @@ struct Login: View {
                 HStack {
                     Text("CONTRASEÑA")
                         .font(.callout)
-                        .foregroundStyle(.gray.opacity(0.7))
+                        .foregroundStyle(.gray.opacity(0.4))
                     Spacer()
                 }
-                SecureField("Ingresa tu Contraseña", text: $password)
+                SecureField("", text: $password, prompt: Text("Ingresa tu Contraseña").foregroundStyle(.black.opacity(0.2)))
                     .padding()
                     .background(Color.black.opacity(0.03))
                     .cornerRadius(18)
@@ -130,6 +132,7 @@ struct Login: View {
                 
                 HStack{
                     Text("¿No tienes cuenta?")
+                        .foregroundStyle(.black)
                     Button("Regístrate"){
                         withAnimation(.easeOut(duration: 0.3)) {
                             if showLogin {
@@ -204,6 +207,7 @@ struct Register: View {
             //Bienvenid@
             HStack {
                 Text("Registrate")
+                    .foregroundStyle(.black)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 Spacer()
@@ -217,7 +221,7 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            TextField("Ej. Rocco", text: $nombre)
+            TextField("", text: $nombre, prompt: Text("Ej. Rocco").foregroundStyle(.black.opacity(0.2)))
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
@@ -233,7 +237,7 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            TextField(mailPlaceholder, text: $email)
+            TextField("", text: $email, prompt: Text(mailPlaceholder).foregroundStyle(.black.opacity(0.2)))
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
@@ -249,7 +253,7 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            SecureField("Ingresa tu Contraseña", text: $password)
+            SecureField("", text: $password, prompt: Text("Ingresa tu Contraseña").foregroundStyle(.black.opacity(0.2)))
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
@@ -263,7 +267,7 @@ struct Register: View {
                     .foregroundStyle(.gray.opacity(0.7))
                 Spacer()
             }
-            SecureField("Confirma tu Contraseña", text: $confirmPassword)
+            SecureField("", text: $confirmPassword, prompt: Text("Confirma tu Contraseña").foregroundStyle(.black.opacity(0.2)))
                 .padding()
                 .background(Color.black.opacity(0.03))
                 .cornerRadius(18)
@@ -322,6 +326,7 @@ struct Register: View {
             
             HStack{
                 Text("¿Ya tienes cuenta?")
+                    .foregroundStyle(.black)
                 Button("Inicia Sesión"){
                     withAnimation(.easeOut(duration: 0.3)) {
                         if showRegister {

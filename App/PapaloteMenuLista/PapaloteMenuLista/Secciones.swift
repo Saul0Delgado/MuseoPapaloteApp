@@ -33,6 +33,7 @@ struct Exhibicion: Identifiable {
     let image: Image
     let desc: String
     let especial: Bool
+//    let isActive: Bool
 
     let objetivos: [String]
     let preguntas: [String]
@@ -51,13 +52,13 @@ struct ListaSecciones {
     let secciones: [Seccion] = [
         Seccion(
             nombre: "Expreso",
-            color: Color(red: 240/255, green: 131/255, blue: 55/255),
+            color: Color("color_expreso"),
             image: Image("img_expreso"),
             desc: "Expreso mis sentimientos y emociones por la naturaleza a través del arte.",
         exhibiciones: [
           Exhibicion(
             nombre: "Composición",
-            color: Color(red: 240/255, green: 131/255, blue: 55/255),
+            color: Color("color_expreso"),
             image: Image("img_expreso_composicion"),
             desc: "Realizo composiciones artísticas al acomodar diferentes elementos de la naturaleza.",
             especial: false,
@@ -70,13 +71,13 @@ struct ListaSecciones {
         ),
         Seccion(
             nombre: "Comunico",
-            color: Color(red: 27/255, green: 98/255, blue: 172/255),
+            color: Color("color_comunico"),
             image: Image("img_comunico"),
             desc: "Comunico mis ideas para mejorar el medio ambiente.",
             exhibiciones: [
           Exhibicion(
             nombre: "Tecnología",
-            color: Color(red: 27/255, green: 98/255, blue: 172/255),
+            color: Color("color_comunico"),
             image: Image("img_comunico_tecnologia"),
             desc: "La basura electrónica se reusa, recicla y reduce.",
             especial: true,
@@ -89,28 +90,28 @@ struct ListaSecciones {
         ),
         Seccion(
             nombre: "Pertenezco",
-            color: Color(red: 114/255, green: 165/255, blue: 68/255),
+            color: Color("color_pertenezco"),
             image: Image("img_pertenezco"),
             desc: "Pertenezco a una gran red de vida en la que todo se relaciona para funcionar.",
             exhibiciones: []
         ),
         Seccion(
             nombre: "Pequeños",
-            color: Color(red: 104/255, green: 197/255, blue: 216/255),
+            color: Color("color_pertenezco"),
             image: Image("img_pequenos"),
             desc: "Exploro la naturaleza a través de mis sentidos.",
             exhibiciones: []
         ),
         Seccion(
             nombre: "Soy",
-            color: Color(red: 231/255, green: 61/255, blue: 44/255),
+            color: Color("color_soy"),
             image: Image("img_soy"),
             desc: "Soy consciente que mis decisiones pueden dañar o mejorar el medio ambiente.",
             exhibiciones: []
         ),
         Seccion(
             nombre: "Comprendo",
-            color: Color(red: 47/255, green: 47/255, blue: 120/255),
+            color: Color("color_comprendo"),
             image: Image("img_comprendo"),
             desc: "Comprendo cómo funciona mi planeta y cómo cuidarlo a través de la ciencia.",
             exhibiciones: []
