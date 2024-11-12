@@ -16,13 +16,16 @@ struct Seccion: Identifiable {
     let image: Image
     let desc: String
     let exhibiciones: [Exhibicion]
+    
+    let objetivos: [String]
 
-    init(nombre: String, color: Color, image: Image, desc: String, exhibiciones: [Exhibicion] = []) {
+    init(nombre: String, color: Color, image: Image, desc: String, exhibiciones: [Exhibicion], objetivos: [String] = []) {
         self.nombre = nombre
         self.color = color
         self.image = image
         self.desc = desc
         self.exhibiciones = exhibiciones
+        self.objetivos = objetivos
     }
 }
 
@@ -67,7 +70,8 @@ struct ListaSecciones {
             datosCuriosos: ["El Land Art es una corriente artística que fusiona el arte y el medio ambiente, el resultado son obras que forman parte de los paisajes."],
             interaccion: ["Observa lo que hay en el arenero", "¡Crea tu propia obra de arte con los elementos presentes en la exhibición!"]
                   )
-        ]
+        ],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         ),
         Seccion(
             nombre: "Comunico",
@@ -86,35 +90,40 @@ struct ListaSecciones {
             datosCuriosos: ["De acuerdo con la Waste Electrical and Electronic Equipment, 40 millones de toneladas de desechos electrónicos se van a tiraderos a nivel mundial", "Anualmente, en México se produce alrededor de 1.1 millones de toneladas de residuos electrónicos y eléctricos y se estima que para 2026 esta cantidad podría crecer en 17%", "Cada 14 de octubre se celebra el Día Internacional de los Residuos Electrónicos"],
             interaccion: ["Gira los cubos y colócalos en el orden correcto para conocer el ciclo de vida de los electrodomésticos que usamos en la vida cotidiana."]
                   )
-        ]
+        ],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         ),
         Seccion(
             nombre: "Pertenezco",
             color: Color("color_pertenezco"),
             image: Image("img_pertenezco"),
             desc: "Pertenezco a una gran red de vida en la que todo se relaciona para funcionar.",
-            exhibiciones: []
+            exhibiciones: [],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         ),
         Seccion(
             nombre: "Pequeños",
-            color: Color("color_pertenezco"),
+            color: Color("color_pequenos"),
             image: Image("img_pequenos"),
             desc: "Exploro la naturaleza a través de mis sentidos.",
-            exhibiciones: []
+            exhibiciones: [],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         ),
         Seccion(
             nombre: "Soy",
             color: Color("color_soy"),
             image: Image("img_soy"),
             desc: "Soy consciente que mis decisiones pueden dañar o mejorar el medio ambiente.",
-            exhibiciones: []
+            exhibiciones: [],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         ),
         Seccion(
             nombre: "Comprendo",
             color: Color("color_comprendo"),
             image: Image("img_comprendo"),
             desc: "Comprendo cómo funciona mi planeta y cómo cuidarlo a través de la ciencia.",
-            exhibiciones: []
+            exhibiciones: [],
+            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
         )
     ]
 }
