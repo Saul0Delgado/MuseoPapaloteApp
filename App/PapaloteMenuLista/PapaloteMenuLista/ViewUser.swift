@@ -10,13 +10,15 @@ import SwiftUI
 struct ViewUser: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
+    
+    @Binding var isLoggedIn : Bool
     let leftPadding : CGFloat = 25
     let wholeScreen = UIScreen.main.bounds.width
     
     @State private var showEditSheet = false
     
-    //@State var user: ActiveUser? = UserManage.loadActiveUser()
-    @State var user : ActiveUser? = ActiveUser(userId: 10, nombre: "Rocco", correo: "rocco_lpz@hotmail.com", edad: 30) // Para test
+    @State var user: ActiveUser? = UserManage.loadActiveUser()
+    //@State var user : ActiveUser? = ActiveUser(userId: 10, nombre: "Rocco", correo: "rocco_lpz@hotmail.com") // Para test
     
     var body: some View {
         if let userActive = user{
@@ -47,9 +49,10 @@ struct ViewUser: View {
                                 .padding()
                                 .padding(.leading)
                             Text(userActive.nombre)
-                                .font(.title3)
-                                .foregroundStyle(.white)
                                 .frame(width:220, alignment: .leading)
+                                .font(.title3)
+                                .tint(.white)
+                                .foregroundStyle(.white)
                                 .padding([.top, .bottom],8)
                             Spacer()
                         }
@@ -72,21 +75,12 @@ struct ViewUser: View {
                                 .font(.title3)
                                 .tint(.white)
                                 .foregroundStyle(.white)
+                                .padding([.top, .bottom],8)
                             Spacer()
                         }
                         .frame(width: wholeScreen-leftPadding*2)
                         
-                        Divider()
-                            .frame(width:wholeScreen-leftPadding*2)
-                        
-                        //Edad
-                        HStack{
-                            Text("Edad: \(userActive.edad)")
-                                .font(.title3)
-                                .foregroundStyle(.white)
-                                .padding([.top, .bottom], 14)
-                        }
-                        .frame(width: wholeScreen-leftPadding*2)
+
                         
                     }
                     .background(
@@ -111,7 +105,7 @@ struct ViewUser: View {
                         Button("Cerrar Sesión") {
                             UserManage.deleteActiveUser()
                             
-                            //TODO: Llevar a la pantalla de inicio
+                            isLoggedIn = false
                         }
                         .padding()
                         .background(Color.accent)
@@ -161,7 +155,6 @@ struct EditProfileView: View {
     
     @State private var newName: String = ""
     @State private var newEmail: String = ""
-    @State private var newAge: String = ""
     
     var body: some View {
         NavigationStack {
@@ -187,19 +180,11 @@ struct EditProfileView: View {
                     .cornerRadius(30)
                     .keyboardType(.emailAddress)
                 
-                // Edad
-                TextField("Nueva Edad", text: $newAge)
-                    .padding()
-                    .padding(.leading)
-                    .background(Color.accent.opacity(0.2))
-                    .cornerRadius(30)
-                    .keyboardType(.numberPad)
-                
                 Spacer()
                 
                 Button("Guardar") {
                     // Actualizar el `user` con los nuevos valores
-                    let newUser = ActiveUser(userId: user?.userId ?? -1, nombre: newName, correo: newEmail, edad: Int(newAge) ?? 0)
+                    let newUser = ActiveUser(userId: user?.userId ?? -1, nombre: newName, correo: newEmail)
                     UserManage.saveActiveUser(newUser)
                     user = newUser
                     
@@ -218,7 +203,6 @@ struct EditProfileView: View {
         .onAppear{
             newName = user?.nombre ?? ""
             newEmail = user?.correo ?? ""
-            newAge = String(user?.edad ?? 0)
             
         }
         .environment(\.colorScheme, .light)
@@ -227,5 +211,5 @@ struct EditProfileView: View {
 
 
 #Preview {
-    ViewUser()
+    ViewUser(isLoggedIn: .constant(true))
 }

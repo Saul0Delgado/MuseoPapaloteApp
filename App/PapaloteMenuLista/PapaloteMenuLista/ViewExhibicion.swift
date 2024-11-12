@@ -13,13 +13,11 @@ struct ViewExhibicion: View {
     
     let leftPadding : CGFloat = 50
     
-    //let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
-    
     @State var rating : Int = 4
     @State var opinion : String = ""
     @FocusState private var isKeyboardFocused : Bool
     @State private var scrollToBottom : Bool = false
-    @State var keyboardHeight : CGFloat = 0
+    @State var keyboardHeight : CGFloat = 120
     
     @State private var showAlert: Bool = false
     @State private var alertTitle : String = ""
@@ -304,9 +302,9 @@ struct ViewExhibicion: View {
                                     .fill(Color.clear)
                                     .frame(width: 1, height:keyboardHeight)
                                 
-                                Rectangle()
-                                    .frame(height:120)
-                                    .foregroundStyle(.clear)
+                                //Rectangle()
+                                //    .frame(height:60)
+                                //    .foregroundStyle(.clear)
                                 
                             }
                         }
@@ -362,7 +360,7 @@ struct ViewExhibicion: View {
         
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
             withAnimation {
-                self.keyboardHeight = 0
+                self.keyboardHeight = 120
             }
         }
     }

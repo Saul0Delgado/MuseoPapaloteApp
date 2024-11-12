@@ -32,6 +32,11 @@ struct ViewFAQ: View {
                 ForEach(faq) { pregunta in
                     ViewFAQItem(pregunta: pregunta)
                 }
+                
+                //Rectangulo Vacio
+                Rectangle()
+                    .fill(.clear)
+                    .frame(height: 100)
             }
         }
         //Top Bar

@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ViewLogin: View {
-    @State private var showAlert: Bool = false
+    @Binding var isLoggedIn : Bool
     
-    @State private var showLogin = false
-    @State private var showRegister = true
+    @State private var showAlert: Bool = false
+    @State private var showLogin = true
+    @State private var showRegister = false
     
     //Valores para ui
     let wholeScreen = UIScreen.main.bounds.width
@@ -23,9 +24,9 @@ struct ViewLogin: View {
             
             //Login
             if showLogin {
-                Login(showLogin: $showLogin, showRegister: $showRegister)
+                Login(isLoggedIn: $isLoggedIn, showLogin: $showRegister, showRegister: $showLogin)
             }else{
-                Register(showLogin: $showLogin, showRegister: $showRegister)
+                Register(isLoggedIn: $isLoggedIn, showLogin: $showLogin, showRegister: $showRegister)
             }
             
             //Logos
@@ -43,6 +44,7 @@ struct ViewLogin: View {
 }
 
 struct Login: View {
+    @Binding var isLoggedIn : Bool
     @State private var email: String = ""
     @State private var password: String = ""
     let mailPlaceholder = "rocco@ejemplo.com"
@@ -63,6 +65,17 @@ struct Login: View {
         //Login
         ZStack {
             VStack{
+                
+                HStack {
+                    Spacer()
+                    Image("logo_verde")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 120)
+                        .padding(.top)
+                        .padding(.trailing)
+                        
+                }
                 
                 //Bienvenid@
                 HStack {
@@ -103,7 +116,7 @@ struct Login: View {
                     .cornerRadius(18)
                     .foregroundColor(.black)
                 
-                Button("Iniciar Sesión"){
+                Button(action: {
                     if email.isEmpty{
                         //No hay email, enviar error email empty
                         AlertTitle = "Correo Faltante"
@@ -117,17 +130,38 @@ struct Login: View {
                         showingAlert = true
                     }
                     else{
-                        //TODO: Solicitud login a db
+                        hideKeyboard()
+                        Task {
+                            let result = await CheckLogin(email: email, password: password)
+                            switch result {
+                            case .success:
+                                isLoggedIn = true
+                            case .unauthorized:
+                                // Login fallido
+                                AlertTitle = "Inicio de Sesión Fallido"
+                                AlertMessage = "Correo o contraseña incorrectos, inténtelo de nuevo."
+                                showingAlert = true
+                            case .error:
+                                // Login fallido
+                                AlertTitle = "Ha ocurrido un error"
+                                AlertMessage = "Ha ocurrido un error, inténtelo de nuevo más tarde."
+                                showingAlert = true
+                            }
+                        }
                     }
+                }){
+                    Text("Iniciar Sesión")
+                        .padding()
+                        .frame(width:250)
+                        .background(Color.accent)
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .cornerRadius(18)
+                        .padding(.top,20)
+                        .padding(.bottom,10)
                 }
-                .padding()
-                .frame(width:250)
-                .background(Color.accent)
-                .foregroundColor(.white)
-                .fontWeight(.bold)
-                .cornerRadius(18)
-                .padding(.top,20)
-                .padding(.bottom,10)
+                
+                
                 
                 
                 HStack{
@@ -156,20 +190,7 @@ struct Login: View {
                 }
             }
             .frame(width:wholeScreen-leftPadding*2)
-            .offset(y:-20)
-            
-            VStack{
-                HStack {
-                    Spacer()
-                    Image("logo_verde")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height:120)
-                        .padding(.top)
-                        .padding(.trailing, leftPadding+10)
-                }
-                Spacer()
-            }
+            .offset(y:-100)
         }
         .alert(isPresented: $showingAlert) {
             Alert(
@@ -179,9 +200,14 @@ struct Login: View {
             )
         }
     }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }
 
 struct Register: View {
+    @Binding var isLoggedIn : Bool
     @State private var nombre: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -273,7 +299,7 @@ struct Register: View {
                 .cornerRadius(18)
                 .foregroundColor(.black)
             
-            Button("Registrate"){
+            Button(action: {
                 if nombre.isEmpty{
                     //No hay email, enviar error email empty
                     AlertTitle = "Nombre Faltante"
@@ -311,17 +337,32 @@ struct Register: View {
                     showingAlert = true
                 }
                 else{
-                    // TODO: Mandar solicitud register a db
+                    hideKeyboard()
+                    Task {
+                        let result = await CheckRegister(name: nombre, email: email, password: password)
+                        switch result {
+                        case .success:
+                            isLoggedIn = true
+                        case .error:
+                            // Registro fallido
+                            AlertTitle = "Ha ocurrido un error"
+                            AlertMessage = "Ocurrió un error creando tu cuenta, inténtalo de nuevo más tarde."
+                            showingAlert = true
+                        }
+                    }
                 }
+            }){
+                Text("Registrarse")
+                    .padding()
+                    .frame(width:250)
+                    .background(Color.accent)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                    .cornerRadius(18)
+                    .padding(.top,20)
+                    .padding(.bottom,10)
             }
-            .padding()
-            .frame(width:250)
-            .background(Color.accent)
-            .foregroundColor(.white)
-            .fontWeight(.bold)
-            .cornerRadius(18)
-            .padding(.top,20)
-            .padding(.bottom,10)
+            
             
             
             HStack{
@@ -360,6 +401,10 @@ struct Register: View {
         }
     }
     
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
     func isValidEmail(_ email: String) -> Bool {
         // Expresión regular para validar el formato de un correo electrónico
         let emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
@@ -396,5 +441,5 @@ struct Background: View {
 }
 
 #Preview {
-    ViewLogin()
+    ViewLogin(isLoggedIn: .constant(false))
 }

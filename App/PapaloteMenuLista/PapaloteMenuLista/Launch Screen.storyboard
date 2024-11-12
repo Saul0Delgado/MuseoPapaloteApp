@@ -22,22 +22,32 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="papaloteIsotipo" translatesAutoresizingMaskIntoConstraints="NO" id="cFg-ky-Bkp">
-                                <rect key="frame" x="137.66666666666666" y="391.66666666666669" width="118" height="94"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_blanco" translatesAutoresizingMaskIntoConstraints="NO" id="hk8-v7-9kI">
+                                <rect key="frame" x="114" y="239" width="165" height="188"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="118" id="J55-uL-xkz"/>
-                                    <constraint firstAttribute="height" constant="94" id="NRB-Zm-nxO"/>
+                                    <constraint firstAttribute="height" constant="188" id="6b3-ju-HKy"/>
+                                    <constraint firstAttribute="width" constant="165" id="aQe-Gh-xF3"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="toco_juego_aprendo_blanco" translatesAutoresizingMaskIntoConstraints="NO" id="y2D-Ow-XVR">
+                                <rect key="frame" x="76.666666666666686" y="662" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="JNm-em-MUE"/>
+                                    <constraint firstAttribute="height" constant="128" id="MEi-Il-xm1"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="AccentColor"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="y2D-Ow-XVR" secondAttribute="bottom" constant="28" id="2e7-ZE-fYG"/>
+                            <constraint firstItem="hk8-v7-9kI" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" constant="-105.5" id="5EB-G8-KLW"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
-                            <constraint firstItem="cFg-ky-Bkp" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="Hcg-UF-SSO"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
-                            <constraint firstItem="cFg-ky-Bkp" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="eDM-7M-MN8"/>
+                            <constraint firstItem="y2D-Ow-XVR" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="ox7-1f-Mau"/>
+                            <constraint firstItem="hk8-v7-9kI" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="yp7-AK-hdc"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,9 +57,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="papaloteIsotipo" width="60" height="57"/>
+        <image name="logo_blanco" width="1626" height="1937"/>
+        <image name="toco_juego_aprendo_blanco" width="2426" height="288"/>
         <namedColor name="AccentColor">
-            <color red="0.77647058823529413" green="0.83137254901960778" blue="0.26666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77600002288818359" green="0.83099997043609619" blue="0.2669999897480011" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
