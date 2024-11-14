@@ -153,8 +153,14 @@ struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var user: ActiveUser?
     
+    //Estados para input
     @State private var newName: String = ""
     @State private var newEmail: String = ""
+    
+    // Estados para la alerta
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
+    @State private var showingAlert: Bool = false
     
     var body: some View {
         NavigationStack {

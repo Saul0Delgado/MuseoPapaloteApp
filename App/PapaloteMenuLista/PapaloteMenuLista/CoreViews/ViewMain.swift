@@ -40,8 +40,8 @@ struct ViewMain: View {
                         .id(reloadKey)
                 }
             }
-            .animation(.easeInOut, value: selectedTab)
-            .animation(.easeInOut, value: reloadKey)
+            .animation(.smooth, value: selectedTab)
+            .animation(.smooth, value: reloadKey)
             
             VStack{
                 Spacer()
