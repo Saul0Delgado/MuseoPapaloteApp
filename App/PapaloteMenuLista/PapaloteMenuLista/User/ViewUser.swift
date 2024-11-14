@@ -123,7 +123,7 @@ struct ViewUser: View {
             .offset(y:-8)
             //Top Bar
             .safeAreaInset(edge: .top) {
-                PapaloteTopBar(color:Color(Color.accent), type: .back)
+                PapaloteTopBar(color:Color(Color.accent), type: .general)
             }
             //Set navbar color
             .onAppear{

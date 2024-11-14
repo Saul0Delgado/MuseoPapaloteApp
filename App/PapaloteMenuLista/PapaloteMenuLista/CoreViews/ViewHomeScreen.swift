@@ -26,6 +26,7 @@ struct ViewHomeScreen: View {
                 Color.white
                 ScrollView {
                     VStack (spacing:15) {
+                        
                         //Bienvenid@ (al código también!!)
                         HStack {
                             Text("¡Bienvenid@!")
@@ -60,19 +61,23 @@ struct ViewHomeScreen: View {
                                     .frame(width:leftPadding/2-20)
                                 
                                 //Botón Mapa
-                                Image("HomeScreenButtonMapa")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: elementHeight)
+                                NavigationLink(destination: ViewMapa()) {
+                                    Image("HomeScreenButtonMapa")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: elementHeight)
+                                }
                                 
                                 //Botón Almanaque
-                                Image("HomeScreenButtonAlmanaque")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: elementHeight)
+                                NavigationLink(destination: ViewAlmanaque()) {
+                                    Image("HomeScreenButtonAlmanaque")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: elementHeight)
+                                }
                                 
                                 //Botón Guía
-                                NavigationLink(destination: ListaMapa()) {
+                                NavigationLink(destination: ViewGuia()) {
                                     Image("HomeScreenButtonGuia")
                                         .resizable()
                                         .scaledToFit()
@@ -129,6 +134,16 @@ struct ViewHomeScreen: View {
                             }
                         }
                         .offset(x:-leftPadding/2)
+                        
+                        //Toco juego y aprendo
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(width:1, height:10)
+                        Image("toco_juego_aprendo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width:200)
+                            .padding(.trailing, leftPadding)
                         
                         //Espacio para NavBar
                         Rectangle()

@@ -71,7 +71,7 @@ struct ListaSecciones {
             interaccion: ["Observa lo que hay en el arenero", "¡Crea tu propia obra de arte con los elementos presentes en la exhibición!"]
                   )
         ],
-            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
+            objetivos: ["Explore a través de sus sentidos: texturas, formas, patrones, colores y sonidos existentes en la naturaleza", "Reconozca la influencia que la naturaleza ha tenido sobre distintas formas de expresión artística", "Exprese sus emociones en torno a la naturaleza y el medio ambiente"]
         ),
         Seccion(
             nombre: "Comunico",
@@ -85,13 +85,13 @@ struct ListaSecciones {
             image: Image("img_comunico_tecnologia"),
             desc: "La basura electrónica se reusa, recicla y reduce.",
             especial: true,
-            objetivos: ["En esta exhibición, identificarás que los aparatos electrónicos se pueden usar, reciclar y reducir"],
+            objetivos: ["En esta exhibición, identificarás que los aparatos electrónicos se pueden usar, reciclar y reducir."],
             preguntas: ["¿Qué haces con los aparatos electrónicos que dejan de funcionar?", "¿Conoces el ciclo de vida de los aparatos electrónicos?", "¿Cómo crees que afecta al medio ambiente cuando los residuos electrónicos no se desechan correctamente?"],
             datosCuriosos: ["De acuerdo con la Waste Electrical and Electronic Equipment, 40 millones de toneladas de desechos electrónicos se van a tiraderos a nivel mundial", "Anualmente, en México se produce alrededor de 1.1 millones de toneladas de residuos electrónicos y eléctricos y se estima que para 2026 esta cantidad podría crecer en 17%", "Cada 14 de octubre se celebra el Día Internacional de los Residuos Electrónicos"],
             interaccion: ["Gira los cubos y colócalos en el orden correcto para conocer el ciclo de vida de los electrodomésticos que usamos en la vida cotidiana."]
                   )
         ],
-            objetivos: ["objetivo1", "objetivo2", "objetivo3"]
+            objetivos: ["Reconozca el valor de divulgar proyectos e iniciativas a favor del medio ambiente", "Identifique que las tecnologías de la información son medios para divulgar proyectos e iniciativas a favor del medio ambiente", "Conozca el trabajo colaborativo que hay detrás de los medios de comunicación"]
         ),
         Seccion(
             nombre: "Pertenezco",

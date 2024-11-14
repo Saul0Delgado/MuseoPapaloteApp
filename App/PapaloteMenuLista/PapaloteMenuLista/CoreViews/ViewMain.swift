@@ -24,13 +24,13 @@ struct ViewMain: View {
                     ViewHomeScreen()
                         .id(reloadKey)
                 case 1:
-                    ViewLogin(isLoggedIn: .constant(false))
+                    ViewMapa()
                         .id(reloadKey)
                 case 2:
-                    ViewHomeScreen()
+                    ViewScanner()
                         .id(reloadKey)
                 case 3:
-                    ViewHomeScreen()
+                    ViewAlmanaque()
                         .id(reloadKey)
                 case 4:
                     ViewUser(isLoggedIn: $isLoggedIn)

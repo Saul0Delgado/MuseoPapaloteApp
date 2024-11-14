@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ListaMapa: View {
+struct ViewGuia: View {
     @Environment(\.dismiss) var dismiss
 	let secciones : ListaSecciones = ListaSecciones()
     let leftPadding : CGFloat = 25
@@ -61,7 +61,7 @@ struct ListaMapa: View {
 
 #Preview {
     ZStack {
-        ListaMapa()
+        ViewGuia()
 
         VStack{
             Spacer()

@@ -21,6 +21,8 @@ struct ContentView: View {
             }
         }
         .onAppear {
+            
+            //Cargar cuenta activa
             let user = UserManage.loadActiveUser()
             
             if user == nil {
@@ -28,6 +30,9 @@ struct ContentView: View {
             } else {
                 isLoggedIn = true
             }
+            
+            //Activar tutorial de Scanner
+            UserDefaults.standard.set(false, forKey: "hasSeenScannerTutorial")
         }
         .animation(.easeInOut, value: isLoggedIn)
     }
