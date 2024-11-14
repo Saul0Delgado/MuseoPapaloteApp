@@ -50,6 +50,7 @@ struct ViewHomeScreen: View {
                             ViewExhibicionMenuItem(exhibicion: exhibicionRecomendada)
                             .offset(x:-leftPadding/2)
                         }
+                        .shadow(radius: 5)
                         
                         //Menú Carrusel
                         ScrollView(.horizontal, showsIndicators: false){

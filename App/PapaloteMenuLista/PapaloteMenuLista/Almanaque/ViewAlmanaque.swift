@@ -8,15 +8,25 @@
 import SwiftUI
 
 struct ViewAlmanaque: View {
+    let secciones : ListaSecciones = ListaSecciones()
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
     
     var body: some View {
-        ScrollView{
-            VStack{
-                
-                //Body
-                Text("Almanaque")
+        VStack {
+            ScrollView {
+                Text("Zonas")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.leading, 25)
+                    .padding(.top, 40.0)
+                    .padding(.bottom, 0)
+                    .frame(maxWidth: .infinity,alignment: .leading)
+                ForEach(secciones.secciones, id: \.nombre) { item in
+                    NavigationLink(destination: ViewSeccion(seccion: item)) {
+                        ViewAlmanaqueSeccion(color: item.color, title: item.nombre, img: item.image, cantidad: item.exhibiciones.count+5)
+                    }
+                }
             }
         }
         //Top Bar

@@ -35,6 +35,7 @@ struct ContentView: View {
             UserDefaults.standard.set(false, forKey: "hasSeenScannerTutorial")
         }
         .animation(.easeInOut, value: isLoggedIn)
+        .environment(\.colorScheme, .light)
     }
 }
 
