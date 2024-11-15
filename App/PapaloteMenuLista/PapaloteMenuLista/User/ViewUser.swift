@@ -149,71 +149,7 @@ struct ViewUser: View {
     }
 }
 
-struct EditProfileView: View {
-    @Environment(\.dismiss) var dismiss
-    @Binding var user: ActiveUser?
-    
-    //Estados para input
-    @State private var newName: String = ""
-    @State private var newEmail: String = ""
-    
-    // Estados para la alerta
-    @State private var alertTitle: String = ""
-    @State private var alertMessage: String = ""
-    @State private var showingAlert: Bool = false
-    
-    var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer()
-                Text("Editar Perfil")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                // Nombre
-                TextField("Nuevo Nombre", text: $newName)
-                    .padding()
-                    .padding(.leading)
-                    .background(Color.accent.opacity(0.2))
-                    .cornerRadius(30)
-                
-                // Correo
-                TextField("Nuevo Correo", text: $newEmail)
-                    .padding()
-                    .padding(.leading)
-                    .background(Color.accent.opacity(0.2))
-                    .cornerRadius(30)
-                    .keyboardType(.emailAddress)
-                
-                Spacer()
-                
-                Button("Guardar") {
-                    // Actualizar el `user` con los nuevos valores
-                    let newUser = ActiveUser(userId: user?.userId ?? -1, nombre: newName, correo: newEmail)
-                    UserManage.saveActiveUser(newUser)
-                    user = newUser
-                    
-                    dismiss() // Cierra la vista
-                }
-                .padding()
-                .background(Color.accent)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                
-                Spacer()
-            }
-            .padding()
-            
-        }
-        .onAppear{
-            newName = user?.nombre ?? ""
-            newEmail = user?.correo ?? ""
-            
-        }
-        .environment(\.colorScheme, .light)
-    }
-}
+
 
 
 #Preview {

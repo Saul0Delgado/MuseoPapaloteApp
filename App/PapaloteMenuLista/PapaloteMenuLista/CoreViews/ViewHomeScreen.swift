@@ -62,35 +62,23 @@ struct ViewHomeScreen: View {
                                     .frame(width:leftPadding/2-20)
                                 
                                 //Botón Mapa
-                                NavigationLink(destination: ViewMapa()) {
-                                    Image("HomeScreenButtonMapa")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: elementHeight)
+                                NavigationLink(destination: ViewMapa(topBarType : .back)) {
+                                    ViewHomeScreenButton(color: Color(red: 0, green: 150/256, blue: 167/256), title: "Mapa", symbol: Image(systemName: "map"), size: 130, imgOffset:[10,40], textOffset: 20, imgSize: 100, fontSize: 17)
                                 }
                                 
                                 //Botón Almanaque
-                                NavigationLink(destination: ViewAlmanaque()) {
-                                    Image("HomeScreenButtonAlmanaque")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: elementHeight)
+                                NavigationLink(destination: ViewAlmanaque(topBarType:.back)) {
+                                    ViewHomeScreenButton(color: Color("color_expreso"), title: "Almanaque", symbol: Image(systemName: "magazine"), size: 130, imgOffset: [10,55], textOffset: 20, imgSize: 100, fontSize: 17)
                                 }
                                 
                                 //Botón Guía
                                 NavigationLink(destination: ViewGuia()) {
-                                    Image("HomeScreenButtonGuia")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: elementHeight)
+                                    ViewHomeScreenButton(color:Color.accent, title: "Guía", symbol: Image("magnifying_glass"), size: 130, imgOffset: [10,30], textOffset: 20, imgSize: 110, fontSize: 17)
                                 }
                                 
                                 //Botón Preguntas
                                 NavigationLink(destination: ViewFAQ()) {
-                                    Image("HomeScreenButtonPreguntasFrecuentes")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: elementHeight)
+                                    ViewHomeScreenButton(color: Color("color_pequenos"), title: "Preguntas\nFrecuentes", symbol: Image("FAQ_icon"), size: 130, imgOffset: [15,40], textOffset: 20, imgSize: 80, fontSize: 17)
                                 }
                                 
                                 //Espacio Vacío
@@ -135,6 +123,7 @@ struct ViewHomeScreen: View {
                             }
                         }
                         .offset(x:-leftPadding/2)
+                        .shadow(radius: 8)
                         
                         //Toco juego y aprendo
                         Rectangle()

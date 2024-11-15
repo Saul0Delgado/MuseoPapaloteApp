@@ -39,6 +39,7 @@ struct ViewFeed: View {
                                 .frame(height:200)
                                 .offset(x:5)
                         }
+                        .frame(width:wholeScreen)
                         
                         Spacer()
                     }
@@ -59,6 +60,7 @@ struct ViewFeed: View {
                             .frame(maxWidth: 320, alignment: .leading)
                             .padding(.bottom, 10)
                         
+                        
                         ForEach(article.content.sorted(by: { $0.pos < $1.pos }), id: \.id) { item in
                             if let textContent = item as? TextContent {
                                 Text(textContent.text)
@@ -71,6 +73,7 @@ struct ViewFeed: View {
                                     .scaledToFit()
                                     .frame(width: wholeScreen-leftPadding*2)
                                     .cornerRadius(30)
+                                    .shadow(radius: 10)
                             }
                         }
                         .padding(.bottom,20)
@@ -79,7 +82,8 @@ struct ViewFeed: View {
                             .foregroundStyle(Color.clear)
                             .frame(height: 120)
                     }
-                    .padding(.leading, leftPadding)
+                    .frame(width:wholeScreen)
+                    .padding(.leading, leftPadding*2)
                 }
                 
                 Spacer()

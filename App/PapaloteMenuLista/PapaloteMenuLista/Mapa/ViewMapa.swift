@@ -10,6 +10,7 @@ import SwiftUI
 struct ViewMapa: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
+    let topBarType : TopBarType
     
     var body: some View {
         ScrollView{
@@ -20,7 +21,7 @@ struct ViewMapa: View {
         }
         //Top Bar
         .safeAreaInset(edge: .top) {
-            PapaloteTopBar(color:Color(Color.accent), type: .general)
+            PapaloteTopBar(color:Color(Color.accent), type: topBarType)
         }
         //Set navbar color
         .onAppear{
@@ -39,5 +40,5 @@ struct ViewMapa: View {
 }
 
 #Preview {
-    ViewMapa()
+    ViewMapa(topBarType : .general)
 }
