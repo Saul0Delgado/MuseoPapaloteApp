@@ -49,7 +49,7 @@ playground.xcworkspace
 
 Carthage/Build/
 
-Scanner/opencv2.framework
+Scanner/opencv2.framework/
 
 # fastlane
 #
