@@ -45,16 +45,18 @@ struct ViewMain: View {
             
             VStack{
                 Spacer()
-                NavBar(selectedTab: $selectedTab, color: Color.accent, reload: $reload)
-                    .onChange(of: reload) { oldValue, newValue in
-                        if newValue == true {
-                            print("Recargando página", selectedTab)
-                            reload = false
-                            withAnimation {
-                                reloadKey = UUID()
+                if selectedTab != 2{
+                    NavBar(selectedTab: $selectedTab, color: Color.accent, reload: $reload)
+                        .onChange(of: reload) { oldValue, newValue in
+                            if newValue == true {
+                                print("Recargando página", selectedTab)
+                                reload = false
+                                withAnimation {
+                                    reloadKey = UUID()
+                                }
                             }
                         }
-                    }
+                }
             }
             .ignoresSafeArea(.keyboard)
         }

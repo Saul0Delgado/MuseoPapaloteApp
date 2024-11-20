@@ -43,9 +43,25 @@
 		FB96C7B62CED472100548B46 /* PapaloteMenuLista-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PapaloteMenuLista-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		FBB441902CED533A006AEB5A /* Exceptions for "PapaloteMenuLista" folder in "Embed Frameworks" phase from "PapaloteMenuLista" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				Scanner/opencv2.framework = (CodeSignOnCopy, RemoveHeadersOnCopy, );
+			};
+			buildPhase = FB96C7C32CED494600548B46 /* Embed Frameworks */;
+			membershipExceptions = (
+				Scanner/opencv2.framework,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FB8762792CB7376200C7AFB1 /* PapaloteMenuLista */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FBB441902CED533A006AEB5A /* Exceptions for "PapaloteMenuLista" folder in "Embed Frameworks" phase from "PapaloteMenuLista" target */,
+			);
 			path = PapaloteMenuLista;
 			sourceTree = "<group>";
 		};
@@ -426,6 +442,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Papalote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "La aplicación necesita acceso a la camara para escanear íconos. ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -474,6 +491,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Papalote;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "La aplicación necesita acceso a la camara para escanear íconos. ";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
