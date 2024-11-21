@@ -47,11 +47,15 @@ struct ViewMain: View {
                 Spacer()
                 NavBar(selectedTab: $selectedTab, color: Color.accent, reload: $reload)
                     .onChange(of: reload) { oldValue, newValue in
+                        
                         if newValue == true {
+                            colorNavBar.color = .accent
                             print("Recargando página", selectedTab)
                             reload = false
+                            
                             withAnimation {
                                 reloadKey = UUID()
+                                
                             }
                         }
                     }

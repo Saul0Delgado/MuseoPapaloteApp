@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FB21FE8A2CED4CA1005D785B /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE892CED4CA1005D785B /* Auth */; };
+		FB21FE8C2CED4CA1005D785B /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE8B2CED4CA1005D785B /* Functions */; };
+		FB21FE8E2CED4CA1005D785B /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE8D2CED4CA1005D785B /* PostgREST */; };
+		FB21FE902CED4CA1005D785B /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE8F2CED4CA1005D785B /* Realtime */; };
+		FB21FE922CED4CA1005D785B /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE912CED4CA1005D785B /* Storage */; };
+		FB21FE942CED4CA1005D785B /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = FB21FE932CED4CA1005D785B /* Supabase */; };
+		FBB2CD382CEEA903004209C6 /* InteractiveMap in Frameworks */ = {isa = PBXBuildFile; productRef = FBB2CD372CEEA903004209C6 /* InteractiveMap */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FB8762882CB7376300C7AFB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +62,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB21FE8E2CED4CA1005D785B /* PostgREST in Frameworks */,
+				FB21FE8C2CED4CA1005D785B /* Functions in Frameworks */,
+				FB21FE942CED4CA1005D785B /* Supabase in Frameworks */,
+				FB21FE8A2CED4CA1005D785B /* Auth in Frameworks */,
+				FBB2CD382CEEA903004209C6 /* InteractiveMap in Frameworks */,
+				FB21FE922CED4CA1005D785B /* Storage in Frameworks */,
+				FB21FE902CED4CA1005D785B /* Realtime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +89,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB21FE882CED4CA1005D785B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FB87626E2CB7376200C7AFB1 = {
 			isa = PBXGroup;
 			children = (
 				FB8762792CB7376200C7AFB1 /* PapaloteMenuLista */,
 				FB87628A2CB7376300C7AFB1 /* PapaloteMenuListaTests */,
 				FB8762942CB7376300C7AFB1 /* PapaloteMenuListaUITests */,
+				FB21FE882CED4CA1005D785B /* Frameworks */,
 				FB8762782CB7376200C7AFB1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +137,13 @@
 			);
 			name = PapaloteMenuLista;
 			packageProductDependencies = (
+				FB21FE892CED4CA1005D785B /* Auth */,
+				FB21FE8B2CED4CA1005D785B /* Functions */,
+				FB21FE8D2CED4CA1005D785B /* PostgREST */,
+				FB21FE8F2CED4CA1005D785B /* Realtime */,
+				FB21FE912CED4CA1005D785B /* Storage */,
+				FB21FE932CED4CA1005D785B /* Supabase */,
+				FBB2CD372CEEA903004209C6 /* InteractiveMap */,
 			);
 			productName = PapaloteMenuLista;
 			productReference = FB8762772CB7376200C7AFB1 /* PapaloteMenuLista.app */;
@@ -195,6 +227,10 @@
 			);
 			mainGroup = FB87626E2CB7376200C7AFB1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				FBB2CD362CEEA8BD004209C6 /* XCRemoteSwiftPackageReference "InteractiveMap" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FB8762782CB7376200C7AFB1 /* Products */;
 			projectDirPath = "";
@@ -414,7 +450,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Tec.mx.PapaloteMenuLista;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.PapaloteMenuLista;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -449,7 +485,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Tec.mx.PapaloteMenuLista;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.tec.PapaloteMenuLista;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -566,6 +602,63 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+		FBB2CD362CEEA8BD004209C6 /* XCRemoteSwiftPackageReference "InteractiveMap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/GrandSir/InteractiveMap";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FB21FE892CED4CA1005D785B /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		FB21FE8B2CED4CA1005D785B /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		FB21FE8D2CED4CA1005D785B /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		FB21FE8F2CED4CA1005D785B /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		FB21FE912CED4CA1005D785B /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		FB21FE932CED4CA1005D785B /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB21FE872CED4C90005D785B /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		FBB2CD372CEEA903004209C6 /* InteractiveMap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBB2CD362CEEA8BD004209C6 /* XCRemoteSwiftPackageReference "InteractiveMap" */;
+			productName = InteractiveMap;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FB87626F2CB7376200C7AFB1 /* Project object */;
 }

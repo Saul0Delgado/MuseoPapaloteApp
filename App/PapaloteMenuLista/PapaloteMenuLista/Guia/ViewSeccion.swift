@@ -12,6 +12,7 @@ struct ViewSeccion: View {
     @ObservedObject var colorNavBar = NavBarColor.shared
     
     let leftPadding : CGFloat = 50
+    let wholeScreen : CGFloat = UIScreen.main.bounds.width
     let seccion : Seccion
     
     //let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
@@ -22,16 +23,16 @@ struct ViewSeccion: View {
             ZStack {
                 ScrollView{
                     VStack(spacing:0){
-                        seccion.color
+                        Color(seccion.color)
                             .frame(height: 115)
                         
                         
-                        //Sección Titulo y Descripción
+                        //MARK: Sección Titulo y Descripción
                         ZStack {
-                            seccion.image
+                            Image(seccion.image_url ?? "image_placeholder")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(height: 330)
+                                .frame(width:wholeScreen, height: 330)
                                 .clipped()
                             LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]),
                                            startPoint: .top, endPoint: .bottom)
@@ -51,7 +52,7 @@ struct ViewSeccion: View {
                         .frame(maxWidth: .infinity)
                         
                         
-                        //Sección Exibiciones divertidas
+                        //MARK: Sección Exibiciones divertidas
                         ZStack {
                             Color.black
                             Rectangle()
@@ -76,7 +77,7 @@ struct ViewSeccion: View {
                                         .font(.largeTitle)
                                         .multilineTextAlignment(.leading)
                                         .padding(.bottom,40)
-                                        .foregroundStyle(seccion.color)
+                                        .foregroundStyle(Color(seccion.color))
                                     Spacer()
                                 }
                                 .frame(width:UIScreen.main.bounds.width)
@@ -92,43 +93,42 @@ struct ViewSeccion: View {
                                             .frame(width:leftPadding/2-20)
                                         
                                         ForEach(seccion.exhibiciones, id: \.nombre) { item in
-                                            NavigationLink(destination: ViewExhibicion(exhibicion: item)) {
-                                                ZStack {
-                                                    item.image
-                                                        .frame(width: 300, height: 180)
-                                                        .cornerRadius(30)
-                                                    Color.black
-                                                        .cornerRadius(30)
-                                                        .opacity(0.2)
-                                                    VStack{
-                                                        HStack{
-                                                            Text(item.nombre)
-                                                                .font(.title)
-                                                                .foregroundStyle(.white)
-                                                                .fontWeight(.bold)
-                                                                .padding(.leading, 30)
+                                            
+                                            if item.featured{
+                                                NavigationLink(destination: ViewExhibicion(exhibicion: item, color: Color(seccion.color))) {
+                                                    ZStack {
+                                                        Image(item.image_name ?? "image_placeholder")
+                                                            .frame(width: 300, height: 180)
+                                                            .cornerRadius(30)
+                                                        Color.black
+                                                            .cornerRadius(30)
+                                                            .opacity(0.2)
+                                                        VStack{
+                                                            HStack{
+                                                                Text(item.nombre)
+                                                                    .font(.title)
+                                                                    .foregroundStyle(.white)
+                                                                    .fontWeight(.bold)
+                                                                    .padding(.leading, 30)
+                                                                Spacer()
+                                                            }
+                                                            .padding(.top, 30)
                                                             Spacer()
-                                                        }
-                                                        .padding(.top, 30)
-                                                        Spacer()
-                                                        HStack{
-                                                            Spacer()
-                                                            Image(systemName: "chevron.forward.circle")
-                                                                .resizable()
-                                                                .scaledToFit()
-                                                                .frame(width: 50)
-                                                                .foregroundStyle(.white)
-                                                                .padding(.trailing, 20)
-                                                                .padding(.bottom, 20)
+                                                            HStack{
+                                                                Spacer()
+                                                                Image(systemName: "chevron.forward.circle")
+                                                                    .resizable()
+                                                                    .scaledToFit()
+                                                                    .frame(width: 50)
+                                                                    .foregroundStyle(.white)
+                                                                    .padding(.trailing, 20)
+                                                                    .padding(.bottom, 20)
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
-                                            
                                         }
-                                        seccion.color
-                                            .frame(width: 300, height: 180)
-                                            .cornerRadius(30)
                                         
                                         //Espacio Vacío
                                         Rectangle()
@@ -157,7 +157,7 @@ struct ViewSeccion: View {
                             .foregroundStyle(.clear)
                             .frame(height: 50)
                         
-                        //Datos Curiosos
+                        //MARK: Objetivos
                         VStack(spacing:0){
                             HStack {
                                 
@@ -166,7 +166,7 @@ struct ViewSeccion: View {
                                     .font(.largeTitle)
                                     .multilineTextAlignment(.leading)
                                     .frame(width:300, height:95, alignment:.leading)
-                                    .foregroundStyle(seccion.color)
+                                    .foregroundStyle(Color(seccion.color))
                                     .padding(.leading,45)
                                 Spacer()
                                 
@@ -211,6 +211,8 @@ struct ViewSeccion: View {
                         .frame(width:UIScreen.main.bounds.width)
                         .padding(.vertical)
                         
+                        
+                        //MARK: Todas Exhibiciones
                         VStack {
                             Spacer()
                             Text("Todas las\nExhibiciones")
@@ -228,26 +230,11 @@ struct ViewSeccion: View {
                             Color.white
                                 .padding(.top,50)
                             VStack {
-                                ForEach(seccion.exhibiciones) { e in
-                                    NavigationLink(destination: ViewExhibicion(exhibicion:e)) {
+                                ForEach(seccion.exhibiciones, id:\.id) { e in
+                                    NavigationLink(destination: ViewExhibicion(exhibicion:e, color: Color(seccion.color))) {
                                         ViewExhibicionMenuItem(exhibicion: e)
                                             .padding(.bottom,25)
                                     }
-                                    
-                                    //Test, luego quitar
-                                    NavigationLink(destination: ViewExhibicion(exhibicion:e)) {
-                                        ViewExhibicionMenuItem(exhibicion: e)
-                                            .padding(.bottom,25)
-                                    }
-                                    NavigationLink(destination: ViewExhibicion(exhibicion:e)) {
-                                        ViewExhibicionMenuItem(exhibicion: e)
-                                            .padding(.bottom,25)
-                                    }
-                                    NavigationLink(destination: ViewExhibicion(exhibicion:e)) {
-                                        ViewExhibicionMenuItem(exhibicion: e)
-                                            .padding(.bottom,25)
-                                    }
-                                    
                                 }
                             }
                         }
@@ -282,7 +269,7 @@ struct ViewSeccion: View {
                 )
             }
             .onAppear{
-                colorNavBar.color = seccion.color
+                colorNavBar.color = Color(seccion.color)
             }
         }
         
@@ -292,6 +279,68 @@ struct ViewSeccion: View {
 }
 
 #Preview {
-    
-    ViewSeccion(seccion: ListaSecciones().secciones[0])
+    ViewSeccion(
+        seccion: Seccion(
+            id: 1,
+            nombre: "Expreso",
+            color: "color_expreso",
+            image_url: "img_pertenezco",
+            desc: "Expreso mis sentimientos y emociones por la naturaleza a través del arte.",
+            exhibiciones: [
+                Exhibicion(
+                    id: 1,
+                    nombre: "Ex",
+                    desc: "Realizo composiciones artísticas al acomodar diferentes elementos de la naturaleza.",
+                    especial: false,
+                    featured: true,
+                    objetivos: ["Objetivo 1", "Objetivo 2"],
+                    preguntas: ["¿Qué materiales necesita un artista para crear una obra?"],
+                    datosCuriosos: ["El Land Art fusiona el arte y el medio ambiente."],
+                    interaccion: ["Crea tu obra con los elementos presentes."],
+                    image_name: "img_expreso_composicion"
+                ),
+                Exhibicion(
+                    id: 2,
+                    nombre: "Ho",
+                    desc: "Realizo composiciones artísticas al acomodar diferentes elementos de la naturaleza.",
+                    especial: false,
+                    featured: true,
+                    objetivos: ["Objetivo 1", "Objetivo 2"],
+                    preguntas: ["¿Qué materiales necesita un artista para crear una obra?"],
+                    datosCuriosos: ["El Land Art fusiona el arte y el medio ambiente."],
+                    interaccion: ["Crea tu obra con los elementos presentes."],
+                    image_name: "img_expreso_composicion"
+                ),
+                Exhibicion(
+                    id: 3,
+                    nombre: "FALSOOO",
+                    desc: "Realizo composiciones artísticas al acomodar diferentes elementos de la naturaleza.",
+                    especial: false,
+                    featured: false,
+                    objetivos: ["Objetivo 1", "Objetivo 2"],
+                    preguntas: ["¿Qué materiales necesita un artista para crear una obra?"],
+                    datosCuriosos: ["El Land Art fusiona el arte y el medio ambiente."],
+                    interaccion: ["Crea tu obra con los elementos presentes."],
+                    image_name: "img_expreso_composicion"
+                ),
+                Exhibicion(
+                    id: 4,
+                    nombre: "FALSOO",
+                    desc: "Realizo composiciones artísticas al acomodar diferentes elementos de la naturaleza.",
+                    especial: false,
+                    featured: false,
+                    objetivos: ["Objetivo 1", "Objetivo 2"],
+                    preguntas: ["¿Qué materiales necesita un artista para crear una obra?"],
+                    datosCuriosos: ["El Land Art fusiona el arte y el medio ambiente."],
+                    interaccion: ["Crea tu obra con los elementos presentes."],
+                    image_name: "img_expreso_composicion"
+                )
+            ],
+            objetivos: [
+                "Explore a través de sus sentidos texturas, formas y patrones.",
+                "Reconozca la influencia que la naturaleza tiene sobre el arte."
+            ]
+        )
+    )
 }
+

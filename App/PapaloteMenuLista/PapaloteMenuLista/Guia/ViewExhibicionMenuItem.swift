@@ -16,7 +16,7 @@ struct ViewExhibicionMenuItem: View {
     
     var body: some View {
         ZStack {
-            exhibicion.image
+            Image(exhibicion.image_name ?? "image_placeholder")
                 .resizable()
                 .scaledToFill()
                 .frame(width: wholeScreen-leftPadding, height:elementHeight*1.5)
@@ -63,8 +63,8 @@ struct ViewExhibicionMenuItem: View {
                         .scaledToFit()
                         .frame(width: 50)
                         .foregroundStyle(.white)
-                        .padding(.trailing,35)
-                        .padding(.bottom, 20)
+                        .padding(.trailing,25)
+                        .padding(.bottom, 25)
                 }
             }
             
@@ -86,6 +86,6 @@ struct ViewExhibicionMenuItem: View {
     }
 }
 
-#Preview {
-    ViewExhibicionMenuItem(exhibicion: ExhibicionEspecial().getExhibicion())
+#Preview{
+    ViewExhibicionMenuItem(exhibicion: Exhibicion(id: 1, nombre: "Hola", desc: "Si hola", especial: true, featured: false, objetivos: [""], preguntas: [""], datosCuriosos: [""], interaccion: [""]))
 }

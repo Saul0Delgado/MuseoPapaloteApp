@@ -10,6 +10,7 @@ import SwiftUI
 struct ViewExhibicion: View {
     @Environment(\.dismiss) var dismiss
     let exhibicion : Exhibicion
+    let color : Color
     
     let leftPadding : CGFloat = 50
     
@@ -48,13 +49,13 @@ struct ViewExhibicion: View {
             ScrollViewReader { scrollProxy in
                 ScrollView{
                     VStack(spacing:0){
-                        exhibicion.color
+                        color
                             .frame(height: 115)
                         
                         
                         //Sección Titulo y Descripción
                         ZStack {
-                            exhibicion.image
+                            Image(exhibicion.image_name ?? "image_placeholder")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(height: 330)
@@ -107,7 +108,7 @@ struct ViewExhibicion: View {
                                             .frame(maxWidth:UIScreen.main.bounds.width-leftPadding/2-50, maxHeight:.infinity)
                                             .padding()
                                             .background{
-                                                exhibicion.color
+                                                color
                                                     .frame(width:UIScreen.main.bounds.width-leftPadding)
                                                     .cornerRadius(25)
                                             }
@@ -127,7 +128,7 @@ struct ViewExhibicion: View {
                                         .font(.largeTitle)
                                         .multilineTextAlignment(.leading)
                                         .padding(.bottom,10)
-                                        .foregroundStyle(exhibicion.color)
+                                        .foregroundStyle(color)
                                         .padding(.leading,leftPadding/2)
                                     Spacer()
                                 }
@@ -139,7 +140,7 @@ struct ViewExhibicion: View {
                                         Text("\(index + 1).")
                                             .font(.system(size: 40))
                                             .fontWeight(.bold)
-                                            .foregroundStyle(exhibicion.color)
+                                            .foregroundStyle(color)
                                             .padding(.trailing, 8)
 
                                         // Paso de Interacción
@@ -177,7 +178,7 @@ struct ViewExhibicion: View {
                                 .padding(.vertical)
                                 .frame(width:UIScreen.main.bounds.width)
                                 .background{
-                                    exhibicion.color
+                                    color
                                         .clipShape(
                                             .rect(
                                                 topLeadingRadius: 0,
@@ -229,7 +230,7 @@ struct ViewExhibicion: View {
                                 .padding(.vertical)
                                 .frame(width:UIScreen.main.bounds.width)
                                 .background{
-                                    exhibicion.color
+                                    color
                                         .clipShape(
                                             .rect(
                                                 topLeadingRadius: 45,
@@ -246,7 +247,7 @@ struct ViewExhibicion: View {
                                         Text("\(index + 1).")
                                             .font(.system(size: 40))
                                             .fontWeight(.bold)
-                                            .foregroundStyle(exhibicion.color)
+                                            .foregroundStyle(color)
                                             .padding(.trailing, 8)
 
                                         // El dato curioso
@@ -358,7 +359,7 @@ struct ViewExhibicion: View {
                                             .foregroundStyle(.white)
                                         Text("Enviar")
                                             .fontWeight(.bold)
-                                            .foregroundStyle(exhibicion.color)
+                                            .foregroundStyle(color)
                                     }
                                     .frame(width: 150, height:60)
                                     .padding(.bottom,20)
@@ -382,7 +383,7 @@ struct ViewExhibicion: View {
                 .onTapGesture(perform: {
                     isKeyboardFocused = false
                 })
-                .background(Color(exhibicion.color))
+                .background(color)
                 .ignoresSafeArea()
                 .navigationBarBackButtonHidden(true)
                 
@@ -399,7 +400,7 @@ struct ViewExhibicion: View {
                 
                 //Top Bar
                 .safeAreaInset(edge: .top) {
-                    PapaloteTopBar(color:Color(exhibicion.color), type: .back)
+                    PapaloteTopBar(color:Color(color), type: .back)
                 }
                 .gesture(DragGesture(minimumDistance: 30)
                     .onEnded { value in
@@ -411,7 +412,7 @@ struct ViewExhibicion: View {
             }
         }
         .onAppear{
-            colorNavBar.color = exhibicion.color
+            colorNavBar.color = color
             subscribeToKeyboardNotifications()
         }
         .onDisappear(perform: unsubscribeFromKeyboardNotifications)
@@ -442,5 +443,31 @@ struct ViewExhibicion: View {
 }
 
 #Preview {
-    ViewExhibicion(exhibicion: ListaSecciones().secciones[0].exhibiciones[0])
+    ViewExhibicion(
+        exhibicion: Exhibicion(
+            id: 1,
+            nombre: "Tecnología",
+            desc: "La basura electrónica se reusa, recicla y reduce.",
+            especial: true,
+            featured: false,
+            objetivos: ["Identificar que los aparatos electrónicos se pueden usar, reciclar y reducir."],
+            preguntas: [
+                "¿Qué haces con los aparatos electrónicos que dejan de funcionar?",
+                "¿Conoces el ciclo de vida de los aparatos electrónicos?",
+                "¿Cómo crees que afecta al medio ambiente cuando los residuos electrónicos no se desechan correctamente?"
+            ],
+            datosCuriosos: [
+                "40 millones de toneladas de desechos electrónicos se van a tiraderos a nivel mundial.",
+                "En México se produce alrededor de 1.1 millones de toneladas de residuos electrónicos.",
+                "Cada 14 de octubre se celebra el Día Internacional de los Residuos Electrónicos."
+            ],
+            interaccion: [
+                "Gira los cubos y colócalos en el orden correcto.",
+                "Conoce el ciclo de vida de los electrodomésticos."
+            ],
+            image_name: "img_tecnologia" // Nombre de la imagen en los assets
+
+        ),
+        color: .blue
+    )
 }
