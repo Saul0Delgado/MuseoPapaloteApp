@@ -28,7 +28,7 @@ struct PapaloteTopBar: View {
                 Button(action: {
                     dismiss()
                 }) {
-                    Image(systemName: "arrowshape.left.circle.fill")
+                    Image(systemName: "chevron.left.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width:35)
@@ -66,7 +66,7 @@ struct PapaloteTopBar: View {
                 Button(action: {
                     dismiss()
                 }) {
-                    Image(systemName: "arrowshape.left.circle.fill")
+                    Image(systemName: "chevron.left.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width:35)

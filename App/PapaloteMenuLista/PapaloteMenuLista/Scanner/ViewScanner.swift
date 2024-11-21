@@ -16,20 +16,17 @@ struct ViewScanner: View {
         VStack{
             if firstLaunch{
                 ZStack {
-                    ScannerBody()
+                    CameraViewControllerRepresentable()
                         .blur(radius: 10)
                     ScannerTutorial(isShowing: $firstLaunch)
                         .transition(.opacity)
                 }
             } else {
-                ScannerBody()
+                CameraViewControllerRepresentable()
             }
         }
+        .ignoresSafeArea()
         .animation(.easeInOut(duration: 0.5), value: firstLaunch)
-        //Top Bar
-        .safeAreaInset(edge: .top) {
-            PapaloteTopBar(color:Color(Color.accent), type: .general)
-        }
         //Set navbar color
         .onAppear{
             firstLaunch = isFirstLaunch()
