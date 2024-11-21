@@ -49,8 +49,6 @@ playground.xcworkspace
 
 Carthage/Build/
 
-App/PapaloteMenuLista/PapaloteMenuLista/Scanner/opencv2.framework/
-
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo.
