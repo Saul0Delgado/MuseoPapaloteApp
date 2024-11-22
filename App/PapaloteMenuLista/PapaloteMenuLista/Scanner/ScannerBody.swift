@@ -39,7 +39,7 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
     }()
 
     // CoreML model
-    let model = try? PapaloteIconos(configuration: MLModelConfiguration()) // Replace 'YourModelName' with your actual CoreML model name
+    let model = try? PapaloteVision1(configuration: MLModelConfiguration()) // Replace 'YourModelName' with your actual CoreML model name
 
     override func viewDidLoad() {
         super.viewDidLoad()
