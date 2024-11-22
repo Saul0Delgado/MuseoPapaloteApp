@@ -12,7 +12,11 @@ struct ViewFAQ: View {
     @ObservedObject var colorNavBar = NavBarColor.shared
     let leftPadding : CGFloat = 25
     
-    let faq = FAQ().getFAQ()
+    //let faq = FAQ().getFAQ()
+    @State var faq : [Question] = MuseoInfo.shared.FAQ
+    
+    @State var isLoading : Bool = false
+    @State var hasAppeared : Bool = false
     
     var body: some View {
         ScrollView{
@@ -29,7 +33,7 @@ struct ViewFAQ: View {
                 }
                 
                 //For Each del FAQ
-                ForEach(faq) { pregunta in
+                ForEach(faq, id:\.id) { pregunta in
                     ViewFAQItem(pregunta: pregunta)
                 }
                 
@@ -46,6 +50,22 @@ struct ViewFAQ: View {
         //Set navbar color
         .onAppear{
             colorNavBar.color = Color.accent
+            if !hasAppeared{
+                hasAppeared = true
+                
+                if faq.count == 0{
+                    // Secciones no ha cargado, fetch
+                    print("Cargando Fetch por primera vez")
+                    Task {
+                        await MuseoInfo.shared.fetch(isLoading: $isLoading)
+                        faq = MuseoInfo.shared.FAQ
+                    }
+                    
+                }else{
+                    print("Ya hay datos, no fetch")
+                }
+                
+            }
         }
         //Slide para ir atras
         .gesture(DragGesture(minimumDistance: 30)

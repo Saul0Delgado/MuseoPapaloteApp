@@ -19,7 +19,7 @@ struct ViewFeed: View {
                 ZStack {
                     VStack {
                         ZStack {
-                            article.image
+                            Image(article.image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: wholeScreen, height: 200)
@@ -62,16 +62,17 @@ struct ViewFeed: View {
                         
                         
                         ForEach(article.content.sorted(by: { $0.pos < $1.pos }), id: \.id) { item in
-                            if let textContent = item as? TextContent {
+                            switch item {
+                            case .text(let textContent):
                                 Text(textContent.text)
                                     .font(.body)
                                     .frame(maxWidth: 320, alignment: .leading)
                                     .padding(.vertical, 5)
-                            } else if let imageContent = item as? ImageContent {
-                                imageContent.image
+                            case .image(let imageContent):
+                                Image(imageContent.image)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: wholeScreen-leftPadding*2)
+                                    .frame(width: wholeScreen - leftPadding * 2)
                                     .cornerRadius(30)
                                     .shadow(radius: 10)
                             }

@@ -18,27 +18,7 @@ struct ContentView: View {
         VStack {
             if isLoggedIn {
                 if isLoading {
-                    //Loading
-                    ZStack{
-                        Color.accent
-                            .ignoresSafeArea()
-                        VStack {
-                            Spacer()
-                            Text("Cargando")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
-                                .padding(.bottom, 30)
-                                .offset(y:-70)
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .scaleEffect(2.0, anchor: .center)
-                                .offset(y:-70)
-                            
-                            Text("MEJORAR ESTA PANTALLA IMPORTANTE")
-                            Spacer()
-                        }
-                    }
+                    ViewLoading()
                 }
                 else {
                     ViewMain(isLoggedIn: $isLoggedIn)

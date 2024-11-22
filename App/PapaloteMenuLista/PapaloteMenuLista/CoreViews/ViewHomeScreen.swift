@@ -15,31 +15,9 @@ struct ViewHomeScreen: View {
     let wholeScreen : CGFloat = UIScreen.main.bounds.width
     let elementHeight : CGFloat = 130
     
-    let noticias = Feed.getArticles()
-    let exhibicionRecomendada : Exhibicion = Exhibicion(
-        id: 1,
-        nombre: "Tecnología",
-        desc: "La basura electrónica se reusa, recicla y reduce.",
-        especial: true,
-        featured: false,
-        objetivos: ["Identificar que los aparatos electrónicos se pueden usar, reciclar y reducir."],
-        preguntas: [
-            "¿Qué haces con los aparatos electrónicos que dejan de funcionar?",
-            "¿Conoces el ciclo de vida de los aparatos electrónicos?",
-            "¿Cómo crees que afecta al medio ambiente cuando los residuos electrónicos no se desechan correctamente?"
-        ],
-        datosCuriosos: [
-            "40 millones de toneladas de desechos electrónicos se van a tiraderos a nivel mundial.",
-            "En México se produce alrededor de 1.1 millones de toneladas de residuos electrónicos.",
-            "Cada 14 de octubre se celebra el Día Internacional de los Residuos Electrónicos."
-        ],
-        interaccion: [
-            "Gira los cubos y colócalos en el orden correcto.",
-            "Conoce el ciclo de vida de los electrodomésticos."
-        ],
-        image_name: "img_comunico_tecnologia" // Nombre de la imagen en los assets
-
-    )
+    //let noticias = Feed.getArticles()
+    var noticias : [FeedArticle] = MuseoInfo.shared.Feed
+    var exhibicionRecomendada : Exhibicion = MuseoInfo.shared.ExhibicionHomeScreen
     
     @ObservedObject var colorNavBar = NavBarColor.shared
     

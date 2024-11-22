@@ -53,6 +53,10 @@ struct Exhibicion: Identifiable, Codable {
     
 }
 
+struct DatabaseExhibicionHomeScreen: Identifiable, Codable {
+    var id: Int
+}
+
 func fetchSecciones() async -> [Seccion] {
     let localKey = "secciones"
     let lastLocalUpdate = UserDefaults.standard.object(forKey: "lastUpdatedSecciones") as? Date
@@ -91,6 +95,45 @@ func fetchSecciones() async -> [Seccion] {
     } catch {
         print("Error al obtener secciones:", error)
         return []
+    }
+}
+
+func fetchExhibicionHomeScreen() async -> Exhibicion {
+    let localKey = "ExhibicionHomeScreen"
+    let lastLocalUpdate = UserDefaults.standard.object(forKey: "lastUpdatedExhHomeScreen") as? Date
+    var exhibicionFetched : Exhibicion = Exhibicion(id: 0, nombre: "ERROR", desc: "Error fetching exhibicion", especial: false, featured: false, objetivos: [], preguntas: [], datosCuriosos: [], interaccion: [])
+
+    // Verificar si hay datos locales y si no necesitan actualización
+    if let localExh = LocalStorage.load(Exhibicion.self, forKey: localKey),
+       !(await shouldUpdate(entityName: "ExhibicionHomeScreen", lastLocalUpdate: lastLocalUpdate)) {
+        return localExh
+    }
+
+    // Fetch remoto si es necesario
+    do {
+        let response: PostgrestResponse<[DatabaseExhibicionHomeScreen]> = try await supabase
+            .from("exhibicion_home_screen")
+            .select("id")
+            .execute()
+        
+        
+        let databaseSecciones = response.value[0]
+        if let objetoEncontrado = MuseoInfo.shared.secciones
+            .flatMap({ $0.exhibiciones })
+            .first(where: { $0.id == databaseSecciones.id })
+        {
+            exhibicionFetched = objetoEncontrado
+        }
+
+        
+        // Guardar datos localmente
+        LocalStorage.save(exhibicionFetched, forKey: localKey)
+        UserDefaults.standard.set(Date(), forKey: "lastUpdatedExhHomeScreen")
+
+        return exhibicionFetched
+    } catch {
+        print("Error al obtener secciones:", error)
+        return exhibicionFetched
     }
 }
 
@@ -203,63 +246,4 @@ func shouldUpdate(entityName: String, lastLocalUpdate: Date?) async -> Bool {
 struct UpdateRecord: Codable {
     let entity_name: String
     let last_updated: String
-}
-
-//MARK: Load Secciones
-
-/*
-func loadSecciones(isLoading: Binding<Bool>, secciones: Binding<[Seccion]>) async {
-
-    
-    isLoading.wrappedValue = true
-    print("Fetching Secciones")
-    
-    let fetchedSecciones = await fetchSecciones()
-    
-    var updatedSecciones: [Seccion] = []
-    
-    for seccion in fetchedSecciones {
-        var updatedSeccion = seccion
-        updatedSeccion.exhibiciones = await fetchExhibiciones(for: seccion.id)
-
-        updatedSecciones.append(updatedSeccion)
-    }
-    
-    secciones.wrappedValue = updatedSecciones
-    isLoading.wrappedValue = false
-}
- */
-
-class MuseoInfo: ObservableObject {
-    static let shared = MuseoInfo()
-    @Published var secciones : [Seccion] = []
-    
-    public func fetch(isLoading: Binding<Bool>, animated: Bool = false) async {
-        isLoading.wrappedValue = true
-        print("Fetching Info Museo")
-        
-        let fetchedSecciones = await fetchSecciones()
-        
-        var updatedSecciones: [Seccion] = []
-        
-        for seccion in fetchedSecciones {
-            var updatedSeccion = seccion
-            updatedSeccion.exhibiciones = await fetchExhibiciones(for: seccion.id)
-
-            updatedSecciones.append(updatedSeccion)
-        }
-        
-        secciones = updatedSecciones
-        
-        if animated {
-            withAnimation{
-                isLoading.wrappedValue = false
-            }
-        }
-        else {
-            isLoading.wrappedValue = false
-        }
-    }
-    
-    private init() {}
 }

@@ -12,7 +12,7 @@ struct ViewFeedMenuItem: View {
     
     var body: some View {
         ZStack {
-            article.image
+            Image(article.image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 250, height: 300)
@@ -39,7 +39,7 @@ struct ViewFeedMenuItem: View {
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.white)
                         .fontWeight(.bold)
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 200, alignment: .leading)
                         .padding([.top, .leading])
                     Spacer()
                 }
@@ -67,5 +67,5 @@ struct ViewFeedMenuItem: View {
 }
 
 #Preview {
-    ViewFeedMenuItem(article: Feed.getArticles()[1])
+    ViewFeedMenuItem(article: Feed.getArticles()[0])
 }

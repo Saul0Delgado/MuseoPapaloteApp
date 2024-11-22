@@ -55,7 +55,7 @@ struct ViewFAQItem: View {
         
         if isAnswerVisible {
             HStack {
-                Text(pregunta.respuesta)
+                Text(.init(pregunta.respuesta))
                     .frame(width: 300, alignment: .leading)
                     .padding()
                     .padding(.leading)
