@@ -39,27 +39,7 @@ struct ViewUser: View {
                     //Datos Perfil
                     VStack(spacing:0){
                         
-                        //Nombre
-                        HStack{
-                            Image(systemName: "person")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30)
-                                .foregroundStyle(.white)
-                                .padding()
-                                .padding(.leading)
-                            Text(userActive.nombre)
-                                .frame(width:220, alignment: .leading)
-                                .font(.title3)
-                                .tint(.white)
-                                .foregroundStyle(.white)
-                                .padding([.top, .bottom],8)
-                            Spacer()
-                        }
-                        .frame(width: wholeScreen-leftPadding*2)
                         
-                        Divider()
-                            .frame(width:wholeScreen-leftPadding*2)
                         
                         //Correo
                         HStack{
@@ -88,6 +68,7 @@ struct ViewUser: View {
                             .fill(.accent)
                     )
                     
+                    /*
                     //Botón editar
                     HStack {
                         Button("Editar") {
@@ -114,7 +95,19 @@ struct ViewUser: View {
                         .padding(.top,50)
                     }
                     .frame(width: 250)
+                    */
                     
+                    //Botón editar
+                    Button("Cerrar Sesión") {
+                        UserManage.deleteActiveUser()
+                        
+                        isLoggedIn = false
+                    }
+                    .padding()
+                    .background(Color.accent)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding(.top,50)
                     
                     
                 }

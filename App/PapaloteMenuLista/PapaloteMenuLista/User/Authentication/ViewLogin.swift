@@ -208,7 +208,6 @@ struct Login: View {
 
 struct Register: View {
     @Binding var isLoggedIn : Bool
-    @State private var nombre: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
@@ -239,22 +238,6 @@ struct Register: View {
                 Spacer()
             }
             .padding(.bottom,20)
-            
-            //Nombre input
-            HStack {
-                Text("NOMBRE")
-                    .font(.callout)
-                    .foregroundStyle(.gray.opacity(0.7))
-                Spacer()
-            }
-            TextField("", text: $nombre, prompt: Text("Ej. Rocco").foregroundStyle(.black.opacity(0.2)))
-                .padding()
-                .background(Color.black.opacity(0.03))
-                .cornerRadius(18)
-                .foregroundColor(.black)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .padding(.bottom)
             
             //Email input
             HStack {
@@ -300,13 +283,7 @@ struct Register: View {
                 .foregroundColor(.black)
             
             Button(action: {
-                if nombre.isEmpty{
-                    //No hay email, enviar error email empty
-                    AlertTitle = "Nombre Faltante"
-                    AlertMessage = "Ingrese su nombre, por favor."
-                    showingAlert = true
-                }
-                else if email.isEmpty{
+                if email.isEmpty{
                     //No hay email, enviar error email empty
                     AlertTitle = "Correo Faltante"
                     AlertMessage = "Ingrese su correo electrónico, por favor."
@@ -339,7 +316,7 @@ struct Register: View {
                 else{
                     hideKeyboard()
                     Task {
-                        let result = await CheckRegister(name: nombre, email: email, password: password)
+                        let result = await CheckRegister(email: email, password: password)
                         switch result {
                         case .success:
                             isLoggedIn = true

@@ -12,7 +12,6 @@ struct EditProfileView: View {
     @Binding var user: ActiveUser?
     
     //Estados para input
-    @State private var newName: String = ""
     @State private var newEmail: String = ""
     
     // Estados para la alerta
@@ -29,13 +28,6 @@ struct EditProfileView: View {
                     .fontWeight(.bold)
                     .padding()
                 
-                // Nombre
-                TextField("Nuevo Nombre", text: $newName)
-                    .padding()
-                    .padding(.leading)
-                    .background(Color.accent.opacity(0.2))
-                    .cornerRadius(30)
-                
                 // Correo
                 TextField("Nuevo Correo", text: $newEmail)
                     .padding()
@@ -48,14 +40,9 @@ struct EditProfileView: View {
                 
                 Button("Guardar") {
                     // Validación de datos
-                    if newName.isEmpty && newEmail.isEmpty {
+                    if newEmail.isEmpty {
                         alertTitle = "Datos incompletos"
-                        alertMessage = "Por favor ingresa un nombre y un correo electrónico."
-                        showingAlert = true
-                        return
-                    } else if newName.isEmpty {
-                        alertTitle = "Nombre vacío"
-                        alertMessage = "Por favor ingresa tu nombre."
+                        alertMessage = "Por favor ingresa un correo electrónico."
                         showingAlert = true
                         return
                     } else if newEmail.isEmpty {
@@ -74,7 +61,7 @@ struct EditProfileView: View {
                     }
                     
                     // Actualizar el `user` con los nuevos valores
-                    let newUser = ActiveUser(userId: user?.userId ?? -1, nombre: newName, correo: newEmail)
+                    let newUser = ActiveUser(userId: user?.userId ?? UUID(), correo: newEmail)
                     UserManage.saveActiveUser(newUser)
                     user = newUser
                     
@@ -91,7 +78,6 @@ struct EditProfileView: View {
             
         }
         .onAppear{
-            newName = user?.nombre ?? ""
             newEmail = user?.correo ?? ""
             
         }
@@ -112,5 +98,5 @@ struct EditProfileView: View {
 }
 
 #Preview {
-    EditProfileView(user: .constant(ActiveUser(userId: 3, nombre: "Rocco", correo: "rocco@lpz.com")))
+    EditProfileView(user: .constant(ActiveUser(userId: UUID(), correo: "rocco@lpz.com")))
 }
