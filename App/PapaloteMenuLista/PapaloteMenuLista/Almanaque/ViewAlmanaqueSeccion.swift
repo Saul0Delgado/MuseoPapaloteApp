@@ -60,11 +60,7 @@ struct ViewAlmanaqueSeccion: View {
                             // Primer exhibición
                             ZStack {
                                 //Text(seccion.exhibiciones[index * 2].nombre)
-                                Image(systemName: "photo.on.rectangle.angled")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundStyle(.white)
-                                    .frame(height: height*0.6)
+                                IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Viento"))
                             }
                             
                             
@@ -73,11 +69,7 @@ struct ViewAlmanaqueSeccion: View {
                                 Spacer()
                                 ZStack {
                                     //Text(seccion.exhibiciones[index * 2 + 1].nombre)
-                                    Image(systemName: "photo.on.rectangle.angled")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundStyle(.white)
-                                        .frame(height: height*0.6)
+                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Bicho"))
                                 }
                             }
                         }

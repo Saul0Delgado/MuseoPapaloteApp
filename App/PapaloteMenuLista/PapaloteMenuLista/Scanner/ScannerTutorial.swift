@@ -15,11 +15,11 @@ struct ScannerTutorial : View {
         ZStack {
             Color.black.opacity(0.6).ignoresSafeArea()
             VStack {
-                Image(systemName: "qrcode.viewfinder")
+                Image("Icono_Tutorial")
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(.accent)
-                    .frame(width:150)
+                    .frame(width:300)
                     .scaleEffect(scale)
                     .onAppear {
                         withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
@@ -27,8 +27,8 @@ struct ScannerTutorial : View {
                         }
                     }
                 Spacer()
-                    .frame(height:120)
-                Text("Descubre lo invisible! 👀 Escanea los códigos y explora el museo de una manera única. ¡Busca el icono para empezar!")
+                    .frame(height:50)
+                Text("¡Explora el museo para encontrar todos los íconos! \n \nEscanealos con la cámara para ir llenando tu álbum y revivir los mejores momentos del museo.")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -60,7 +60,7 @@ struct ScannerTutorial : View {
                 }
             }
             .frame(height:500)
-            .offset(y:-45)
+            
         }
     }
 }

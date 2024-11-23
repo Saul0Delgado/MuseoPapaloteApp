@@ -11,18 +11,30 @@ struct ViewScanner: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
     @State var firstLaunch: Bool = false
+    @ObservedObject var albumViewModel = IconAlbumViewModel()
+    @State private var showIconSheet = false
+    @State private var detectedIconName: String = ""
+    @State private var detectedIconImage: UIImage? = nil
+
     
     var body: some View {
-        VStack{
-            if firstLaunch{
+        VStack {
+            if firstLaunch {
                 ZStack {
-                    CameraViewControllerRepresentable()
-                        .blur(radius: 10)
+                    CameraViewControllerRepresentable(
+                        albumViewModel: albumViewModel,
+                        onIconDetected: handleIconDetection
+                    )
+                    .blur(radius: 10)
+                    
                     ScannerTutorial(isShowing: $firstLaunch)
                         .transition(.opacity)
                 }
             } else {
-                CameraViewControllerRepresentable()
+                CameraViewControllerRepresentable(
+                    albumViewModel: albumViewModel,
+                    onIconDetected: handleIconDetection
+                )
             }
         }
         .ignoresSafeArea()
@@ -41,6 +53,13 @@ struct ViewScanner: View {
             }
         )
         .navigationBarBackButtonHidden(true)
+    }
+    
+    func handleIconDetection(iconName: String, iconImage: UIImage) {
+        // Update the detected icon and show the sheet
+        detectedIconName = iconName
+        detectedIconImage = iconImage
+        showIconSheet = true
     }
     
     func isFirstLaunch() -> Bool {

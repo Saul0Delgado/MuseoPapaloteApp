@@ -23,11 +23,18 @@
 import Foundation
 import SwiftUI
 struct CameraViewControllerRepresentable: UIViewControllerRepresentable {
-    func updateUIViewController(_ uiViewController: CameraViewControllerTM, context: Context) {
-        //No update necessary
-    }
+    var albumViewModel: IconAlbumViewModel // Pass the album ViewModel
+    var onIconDetected: (String, UIImage) -> Void // Callback for detected icon
 
     func makeUIViewController(context: Context) -> CameraViewControllerTM {
-        return CameraViewControllerTM()
+        let controller = CameraViewControllerTM()
+        controller.albumViewModel = albumViewModel // Pass ViewModel to controller
+        controller.onIconDetected = onIconDetected // Pass callback to controller
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: CameraViewControllerTM, context: Context) {
+        // No update necessary
     }
 }
+
