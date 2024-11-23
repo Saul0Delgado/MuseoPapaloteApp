@@ -32,15 +32,45 @@ struct ViewExhibicion: View {
         showAlert = true
     }
     
-    func EnviarOpinion(user: Int, rating: Int, opinion: String, completion: @escaping (Bool) -> Void) {
+    struct FeedbackToInsert : Codable, Sendable{
+        var id: UUID
+        var id_user: UUID
+        var id_exhibicion: Int
+        var rating: Int
+        var comentario: String
+    }
+    
+    func EnviarOpinion(rating: Int, opinion: String, completion: @escaping (Bool) -> Void) async{
         
-        print(user, exhibicion.nombre, rating, opinion)
+        let user_id = UserManage.loadActiveUser()?.userId
         
-        //Simulación de envio
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            let success = true
-            completion(success)
+        if let id = user_id {
+            
+            let exh_id = exhibicion.id
+            
+            let dataToInsert = FeedbackToInsert(id: UUID(), id_user: id, id_exhibicion: exh_id, rating: rating, comentario: opinion)
+            
+            
+            do {
+                let response = try await supabase
+                    .from("feedback")
+                    .insert(dataToInsert)
+                    .execute()
+                
+                let success = true
+                completion(success)
+            }
+            catch {
+                print("Error al insertar el feedback: \(error.localizedDescription)")
+                let success = false
+                completion(success)
+            }
+            
+            
         }
+        
+        let success = true
+        completion(success)
     }
     
     //View
@@ -341,16 +371,18 @@ struct ViewExhibicion: View {
                                         return
                                     }
                                     
-                                    EnviarOpinion(user: 1, rating: rating, opinion: opinion) { success in
-                                        if !success {
-                                            ShowAlert(alert_message: "Ocurrió un error al enviar tu opinión, inténtalo más tarde.", alert_title: "Error")
-                                        } else {
-                                            ShowAlert(alert_message: "¡Tu retroalimentación se envió correctamente, Agradecemos tus comentarios!", alert_title: "¡Listo!")
-                                            opinion = ""
-                                            rating = 4
+                                    
+                                    Task{
+                                        await EnviarOpinion(rating: rating, opinion: opinion) { success in
+                                            if !success {
+                                                ShowAlert(alert_message: "Ocurrió un error al enviar tu opinión, inténtalo más tarde.", alert_title: "Error")
+                                            } else {
+                                                ShowAlert(alert_message: "¡Tu retroalimentación se envió correctamente, Agradecemos tus comentarios!", alert_title: "¡Listo!")
+                                                opinion = ""
+                                                rating = 4
+                                            }
                                         }
                                     }
-                                    
                                     
                                     isKeyboardFocused = false
                                 } label: {

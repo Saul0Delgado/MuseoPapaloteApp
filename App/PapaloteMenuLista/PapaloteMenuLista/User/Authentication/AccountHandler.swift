@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import PostgREST
 
 enum LoginResult {
     case success
@@ -13,11 +14,34 @@ enum LoginResult {
     case error
 }
 
+struct DatabaseName : Codable {
+    var nombre : TextContent
+}
+
 func CheckLogin(email: String, password: String) async -> LoginResult {
-    //TODO: Llamar bd y checar login exitoso
-    
-    await UserManage.saveActiveUser(GetUser(email: email)) // Esta linea corre si el registro fue exitoso
-    return .success // Temporal
+    do {
+        // Intenta hacer login utilizando Supabase
+        let response = try await supabase.auth.signIn(email: email, password: password)
+        
+        // Si el login es exitoso
+        let user = response.user
+        
+        let active_user = ActiveUser(userId: user.id, correo: user.email ?? "")
+        UserManage.saveActiveUser(active_user)
+        print(user.id)
+        
+        return .success
+
+    } catch {
+        // Si ocurre algún error en el proceso (por ejemplo, problemas de red o servicio)
+        print("Error al hacer login: \(error.localizedDescription)")
+        
+        if error.localizedDescription == "Invalid login credentials" {
+            return .unauthorized
+        }
+        
+        return .error
+    }
 }
 
 enum RegisterResult {
@@ -25,24 +49,38 @@ enum RegisterResult {
     case error
 }
 
-func CheckRegister(name: String, email: String, password: String) async -> RegisterResult {
-    //TODO: Llamar bd y crear cuenta, regresar true si el movimiento fue exitoso
-    
-    await UserManage.saveActiveUser(GetUser(email: email)) // Esta linea corre si el registro fue exitoso
-    return .success // Temporal
+func CheckRegister(email: String, password: String) async -> RegisterResult {
+    do {
+        // Intenta hacer login utilizando Supabase
+        let response = try await supabase.auth.signUp(email: email, password: password)
+        
+        // Si el login es exitoso
+        let user = response.user
+        
+        let active_user = ActiveUser(userId: user.id, correo: user.email ?? "")
+        UserManage.saveActiveUser(active_user)
+        print("cuenta creada \(user.id)")
+        
+        return .success
+
+    } catch {
+        // Si ocurre algún error en el proceso (por ejemplo, problemas de red o servicio)
+        print("Error al hacer login: \(error.localizedDescription)")
+        
+        if error.localizedDescription == "Invalid login credentials" {
+            return .error
+        }
+        
+        return .error
+    }
 }
 
-func GetUser(email: String) async -> ActiveUser {
-    //TODO: Llamar bd y obtener información de una cuenta (id, nombre y correo) usando email como parametro
-    
-    return ActiveUser(userId: 1, nombre: "Test", correo: "placeholder@papalote.com") // Temporal
-}
+
 
 // Funciones y Clase Usuario
 
 struct ActiveUser: Codable {
-    var userId: Int
-    var nombre: String
+    var userId: UUID
     var correo: String
 }
 
