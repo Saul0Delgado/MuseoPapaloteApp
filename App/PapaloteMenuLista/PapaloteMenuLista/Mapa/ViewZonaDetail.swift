@@ -1,11 +1,10 @@
 import SwiftUI
 
 struct ViewZonaDetail: View {
-    let zona: SeccionStatic  // Zona seleccionada desde el mapa
+    let zona: Seccion  // Zona seleccionada desde el mapa
     let leftPadding: CGFloat = 25
     let wholeScreen: CGFloat = UIScreen.main.bounds.width
-    @State private var selectedIndex = 0  // Índice del modelo actual
-    
+    @State private var selectedIndex = 0
     @State private var showingCallout = true
     
     var body: some View {
@@ -13,18 +12,16 @@ struct ViewZonaDetail: View {
             Color(zona.color)
                 .ignoresSafeArea()
             VStack {
-                
                 Text(zona.nombre)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
                     .padding(.top,30)
                     .padding(.bottom,10)
-                
                 Spacer()
                 
                 Text("\(selectedIndex+1) / \(zona.exhibiciones.count)")
-                    .foregroundStyle(zona.color)
+                    .foregroundStyle(Color(zona.color))
                     .fontWeight(.bold)
                     .padding(.vertical, 3)
                     .padding(.horizontal, 40)
@@ -33,7 +30,7 @@ struct ViewZonaDetail: View {
                     }
                     .cornerRadius(5)
                 
-                //Monkey
+                //Navegación entre exhibiciones
                 HStack(spacing: 8) {
                     // Flecha izquierda
                     Button(action: {
@@ -46,14 +43,10 @@ struct ViewZonaDetail: View {
                             .foregroundColor(.white)
                             .opacity(selectedIndex > 0 ? 1.0 : 0.3)
                     }
-                    
-                    // Modelo 3D en el centro
-                    SceneModelView(
-                        modelName: "monkey",
-                        color: Color.red
-                    )
-                    .frame(width: 250, height: 150)
-                    .cornerRadius(12)
+                    // Contenido principal (modelo, imagen o placeholder)
+                        contentForExhibicion(zona.exhibiciones[selectedIndex])
+                            .frame(width: 250, height: 150)
+                            .cornerRadius(12)
                     
                     // Flecha derecha
                     Button(action: {
@@ -83,46 +76,49 @@ struct ViewZonaDetail: View {
                 
                 Spacer()
                 
-                HStack {
-                    Text("Gusanos")
-                        .frame(height:40)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
-                    
-                    if true {
-                        HStack(spacing:0) {
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height:12)
-                                .padding(.trailing,5)
-                                .offset(y:-0.5)
-                            Text("TEMPORAL")
+                //Informacion de la exhibicion
+                if let exhibicion = zona.exhibiciones[safe: selectedIndex] {
+                    HStack {
+                        Text(exhibicion.nombre)
+                            .frame(height:40)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white)
+                        
+                        if exhibicion.especial {
+                            HStack(spacing:0) {
+                                Image(systemName: "star.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height:12)
+                                    .padding(.trailing,5)
+                                    .offset(y:-0.5)
+                                Text("TEMPORAL")
+                            }
+                            .font(.footnote)
+                            .foregroundStyle(Color(zona.color))
+                            .fontWeight(.bold)
+                            .frame(height:20)
+                            .padding(.horizontal,8)
+                            .background{
+                                Color.white
+                                    .cornerRadius(5)
+                            }
+                            .offset(y:2)
                         }
-                        .font(.footnote)
-                        .foregroundStyle(zona.color)
-                        .fontWeight(.bold)
-                        .frame(height:20)
-                        .padding(.horizontal,8)
-                        .background{
-                            Color.white
-                                .cornerRadius(5)
-                        }
-                        .offset(y:2)
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.top, 25)
+                    .padding(.leading, leftPadding)
+                    
+                    HStack {
+                        Text(exhibicion.desc)
+                            .foregroundStyle(.white)
+                        Spacer()
+                    }
+                    .padding(.leading, leftPadding)
+                    .padding(.bottom, 16)
                 }
-                .padding(.top, 25)
-                .padding(.leading, leftPadding)
-                
-                HStack {
-                    Text("Esta es la descripción de la exhibicion en cuestion hola si que tal")
-                        .foregroundStyle(.white)
-                    Spacer()
-                }
-                .padding(.leading, leftPadding)
-                .padding(.bottom, 16)
                 
                 Button(action: {
                                     
@@ -139,7 +135,7 @@ struct ViewZonaDetail: View {
                             .font(.title2)
                         
                     }
-                    .foregroundStyle(zona.color)
+                    .foregroundStyle(Color(zona.color))
                     .padding(.vertical, 30)
                     .frame(width:wholeScreen-leftPadding*2)
                     .background{
@@ -155,20 +151,90 @@ struct ViewZonaDetail: View {
 
         }
     }
-    
+    @ViewBuilder
+    private func contentForExhibicion(_ exhibicion: Exhibicion) -> some View {
+        if let modelName = exhibicion.model_file {
+            SceneModelView(modelName: modelName, color: Color(hexValue: zona.color))
+        } else if let imageName = exhibicion.image_name, let image = UIImage(named: imageName) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 250, height: 150)
+                .background(Color.white)
+                .cornerRadius(15)
+                .border(.white, width: 5)
+                .cornerRadius(5)
+              
+        } else {
+            Image("placeholder_image")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 250, height: 150)
+                .background(Color.white)
+                .cornerRadius(15)
+                .border(.white, width: 5)
+                .cornerRadius(5)
+      
+        }
+    }
 }
+
+// Extensión para obtener elementos seguros de un array
+extension Collection {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+    
 
 
 #Preview {
+    let mockExhibiciones = [
+        Exhibicion(
+            id: 1,
+            nombre: "Exhibición 1",
+            desc: "Descripción de la exhibición 1.",
+            especial: false,
+            featured: true,
+            objetivos: [],
+            preguntas: [],
+            datosCuriosos: [],
+            interaccion: [],
+            image_name: nil,
+            model_file: "monkey"
+        ),
+        Exhibicion(
+            id: 2,
+            nombre: "Exhibición 2",
+            desc: "Descripción de la exhibición 2.",
+            especial: true,
+            featured: false,
+            objetivos: [],
+            preguntas: [],
+            datosCuriosos: [],
+            interaccion: [],
+            image_name: "image_placeholder",
+            model_file: nil
+        )
+    ]
+    
+    let mockZona = Seccion(
+        id: 1,
+        nombre: "Zona Demo",
+        color: "color_soy", // Hex del color
+        image_url: nil,
+        desc: "Descripción de la zona demo.",
+        exhibiciones: mockExhibiciones,
+        objetivos: []
+    )
+    
     ZStack {
-        Text("Hola")
-            .sheet(isPresented: .constant(true)) {
-                ViewZonaDetail(zona: ListaSeccionesBORRAMENOSIRVO().secciones[0])
-                    .presentationDetents([.fraction(0.75)])
-                    .presentationCornerRadius(30)
-                    .presentationDragIndicator(.visible)
-            }
-        
-        
-    }
-}
+        Text("hola")
+        .sheet(isPresented: .constant(true)) {
+                   ViewZonaDetail(zona: mockZona)
+                       .presentationDetents([.fraction(0.75)])
+                       .presentationCornerRadius(30)
+                       .presentationDragIndicator(.visible) 
+               }
+       }
+   }

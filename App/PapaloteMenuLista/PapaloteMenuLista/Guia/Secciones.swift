@@ -1,3 +1,4 @@
+
 //
 //  Secciones.swift
 //  PapaloteMenuLista
@@ -10,7 +11,7 @@ import SwiftUICore
 import SwiftUI
 import PostgREST
 
-// Estructura intermedia para decodificación de la tabla `zona`
+// Estructura intermedia para decodificación de la tabla zona
 struct DatabaseSeccion: Codable {
     let id: Int
     let nombre: String
@@ -19,7 +20,7 @@ struct DatabaseSeccion: Codable {
     let descripcion: String
 }
 
-// Estructura intermedia para decodificación de la tabla `exhibicion`
+// Estructura intermedia para decodificación de la tabla exhibicion
 struct DatabaseExhibicion: Codable {
     let exhib_id: Int
     let nombre: String
@@ -27,6 +28,7 @@ struct DatabaseExhibicion: Codable {
     let especial: Bool
     let featured: Bool
     let image_name: String?
+    let model_file: String?
 }
 
 struct Seccion: Identifiable, Codable {
@@ -50,6 +52,7 @@ struct Exhibicion: Identifiable, Codable {
     var datosCuriosos: [String]
     var interaccion: [String]
     var image_name: String?
+    var model_file: String?
     
 }
 
@@ -151,7 +154,7 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
     do {
         let response: PostgrestResponse<[DatabaseExhibicion]> = try await supabase
             .from("exhibicion")
-            .select("exhib_id, nombre, descripcion, especial, featured, image_name")
+            .select("exhib_id, nombre, descripcion, especial, featured, image_name, model_file")
             .eq("zona_id", value: zonaID)
             .execute()
         
@@ -167,7 +170,8 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
                 preguntas: [],
                 datosCuriosos: [],
                 interaccion: [],
-                image_name: dbExhibicion.image_name
+                image_name: dbExhibicion.image_name ?? "placeholder_image",
+                model_file: dbExhibicion.model_file
             )
         }
 
@@ -247,3 +251,41 @@ struct UpdateRecord: Codable {
     let entity_name: String
     let last_updated: String
 }
+<<<<<<< Updated upstream
+=======
+
+
+class MuseoInfo: ObservableObject {
+    static let shared = MuseoInfo()
+    @Published var secciones : [Seccion] = []
+    
+    public func fetch(isLoading: Binding<Bool>, animated: Bool = false) async {
+        isLoading.wrappedValue = true
+        print("Fetching Info Museo")
+        
+        let fetchedSecciones = await fetchSecciones()
+        
+        var updatedSecciones: [Seccion] = []
+        
+        for seccion in fetchedSecciones {
+            var updatedSeccion = seccion
+            updatedSeccion.exhibiciones = await fetchExhibiciones(for: seccion.id)
+
+            updatedSecciones.append(updatedSeccion)
+        }
+        
+        secciones = updatedSecciones
+        
+        if animated {
+            withAnimation{
+                isLoading.wrappedValue = false
+            }
+        }
+        else {
+            isLoading.wrappedValue = false
+        }
+    }
+    
+    private init() {}
+}
+>>>>>>> Stashed changes
