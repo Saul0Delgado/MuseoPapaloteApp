@@ -173,10 +173,10 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
         
         var fetchedExhibiciones: [Exhibicion] = []
         for dbExhibicion in databaseExhibiciones {
-            let objetivos = await fetchObjetivos(for: dbExhibicion.exhib_id)
-            let preguntas = await fetchPreguntas(for: dbExhibicion.exhib_id)
-            let interaccion = await fetchInteracciones(for: dbExhibicion.exhib_id)
-            let datosCuriosos = await fetchDatosCuriosos(for: dbExhibicion.exhib_id)
+            async let objetivos = await fetchObjetivos(for: dbExhibicion.exhib_id)
+            async let preguntas = await fetchPreguntas(for: dbExhibicion.exhib_id)
+            async let interaccion = await fetchInteracciones(for: dbExhibicion.exhib_id)
+            async let datosCuriosos = await fetchDatosCuriosos(for: dbExhibicion.exhib_id)
 
             let exhibicion = Exhibicion(
                 id: dbExhibicion.exhib_id,
@@ -184,10 +184,10 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
                 desc: dbExhibicion.descripcion ?? "Esta actividad no tiene descripción",
                 especial: dbExhibicion.especial,
                 featured: dbExhibicion.featured,
-                objetivos: objetivos,
-                preguntas: preguntas,
-                datosCuriosos: datosCuriosos,
-                interaccion: interaccion,
+                objetivos: await objetivos,
+                preguntas: await preguntas,
+                datosCuriosos: await datosCuriosos,
+                interaccion: await interaccion,
                 image_name: dbExhibicion.image_name ?? "image_placeholder",
                 model_file: dbExhibicion.model_file
             )
