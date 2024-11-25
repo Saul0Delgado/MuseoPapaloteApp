@@ -5,11 +5,32 @@
       <author>Blender User</author>
       <authoring_tool>Blender 4.2.2 LTS commit date:2024-09-23, commit time:12:18, hash:c03d7d98a413</authoring_tool>
     </contributor>
-    <created>2024-11-25T01:41:41</created>
-    <modified>2024-11-25T01:41:41</modified>
+    <created>2024-11-25T13:45:06</created>
+    <modified>2024-11-25T13:45:06</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
+  <library_cameras>
+    <camera id="Camera-camera" name="Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">39.59775</xfov>
+            <aspect_ratio>1.777778</aspect_ratio>
+            <znear sid="znear">0.1</znear>
+            <zfar sid="zfar">100</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+      <extra>
+        <technique profile="blender">
+          <shiftx sid="shiftx" type="float">0</shiftx>
+          <shifty sid="shifty" type="float">0</shifty>
+          <dof_distance sid="dof_distance" type="float">10</dof_distance>
+        </technique>
+      </extra>
+    </camera>
+  </library_cameras>
   <library_lights>
     <light id="Light-light" name="Light">
       <technique_common>
@@ -1604,6 +1625,10 @@
             </technique_common>
           </bind_material>
         </instance_geometry>
+      </node>
+      <node id="Camera" name="Camera" type="NODE">
+        <matrix sid="transform">0.6859207 -0.3240135 0.6515582 7.358891 0.7276763 0.3054208 -0.6141704 -6.925791 0 0.8953956 0.4452714 4.958309 0 0 0 1</matrix>
+        <instance_camera url="#Camera-camera"/>
       </node>
       <node id="Light" name="Light" type="NODE">
         <matrix sid="transform">-0.2908646 -0.7711008 0.5663932 -7.325468 0.9551712 -0.1998834 0.2183912 1.632928 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
