@@ -26,6 +26,7 @@ struct Seccion: Identifiable, Codable {
     var desc: String
     var exhibiciones: [Exhibicion]
     var objetivos: [String]
+    var almanaque: [IconoAlmanaque]?
 }
 
 // Estructura intermedia para decodificación de la tabla exhibicion
@@ -41,6 +42,7 @@ struct DatabaseExhibicion: Codable {
     let objetivos: [String]?
     let interaccion: [String]?
     let datosCuriosos: [String]?
+    let icono_name: String?
 }
 
 
@@ -56,7 +58,13 @@ struct Exhibicion: Identifiable, Codable {
     var interaccion: [String]
     var image_name: String?
     var model_file: String?
+    var icono: String?
     
+}
+
+struct IconoAlmanaque: Codable {
+    var exhibicion: Exhibicion
+    var icono_name: String
 }
 
 struct DatabaseExhibicionHomeScreen: Identifiable, Codable {
@@ -164,7 +172,7 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
     do {
         let response: PostgrestResponse<[DatabaseExhibicion]> = try await supabase
             .from("exhibicion")
-            .select("exhib_id, nombre, descripcion, especial, featured, image_name, model_file")
+            .select("exhib_id, nombre, descripcion, especial, featured, image_name, model_file, icono_name")
             .eq("zona_id", value: zonaID)
             .execute()
         
@@ -189,7 +197,8 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
                 datosCuriosos: await datosCuriosos,
                 interaccion: await interaccion,
                 image_name: dbExhibicion.image_name ?? "image_placeholder",
-                model_file: dbExhibicion.model_file
+                model_file: dbExhibicion.model_file,
+                icono: dbExhibicion.icono_name
             )
             fetchedExhibiciones.append(exhibicion)
         }

@@ -8,80 +8,127 @@
 import SwiftUI
 
 struct ViewAlmanaqueSeccion: View {
-    var seccion : Seccion
+    @State var seccion : Seccion
     
     let height = 160.0
     let width = UIScreen.main.bounds.width - 50
     let bord_radius = 20.0
     
+    @State var isLoading : Bool = true
+    
     
     var body: some View {
-        VStack(spacing:0) {
-            ZStack (alignment: .leading) {
-                Rectangle()
-                    .fill(Color(seccion.color))
-                    .frame(width: width, height: 60)
-                    .clipShape(
-                        .rect(
-                            topLeadingRadius: bord_radius,
-                            bottomLeadingRadius: bord_radius,
-                            bottomTrailingRadius: bord_radius,
-                            topTrailingRadius: bord_radius
-                        )
-                    )
-                    //.shadow(radius: 10, x:10, y:10)
-                Text(seccion.nombre)
-                    .frame(alignment: .leading)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.white)
-                    .padding(.leading,32)
-            }
-            ZStack{
-                Color(seccion.color)
-                    
-                    .opacity(0.25)
-                
-                    .frame(width: width, height: height * Double(((seccion.exhibiciones.count+1)/2)))
-                
-                    .clipShape(
-                        .rect(
-                            topLeadingRadius: 0,
-                            bottomLeadingRadius: bord_radius,
-                            bottomTrailingRadius: bord_radius,
-                            topTrailingRadius: 0
-                        )
-                    )
-                
-                VStack(spacing:55) {
-                    // Usamos el índice del arreglo y creamos grupos de 2
-                    ForEach(0..<seccion.exhibiciones.count/2 + (seccion.exhibiciones.count % 2 == 0 ? 0 : 1), id: \.self) { index in
-                        HStack {
-                            // Primer exhibición
-                            ZStack {
-                                //Text(seccion.exhibiciones[index * 2].nombre)
-                                IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Viento"))
-                            }
-                            
-                            
-                            // Segundo exhibición (si existe)
-                            if index * 2 + 1 < seccion.exhibiciones.count {
-                                Spacer()
-                                ZStack {
-                                    //Text(seccion.exhibiciones[index * 2 + 1].nombre)
-                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Especies"))
-                                }
-                            }
-                        }
-                        .frame(width: width*0.8)
+        if isLoading{
+            
+            Text("Loading")
+                .onAppear{
+                    Task{
+                        await definirIconos(seccion: $seccion)
+                        isLoading = false
                     }
                 }
-                
-            }.offset(y:-20)
+            
+        } else {
+            VStack(spacing:0) {
+                ZStack (alignment: .leading) {
+                    Rectangle()
+                        .fill(Color(seccion.color))
+                        .frame(width: width, height: 60)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: bord_radius,
+                                bottomLeadingRadius: bord_radius,
+                                bottomTrailingRadius: bord_radius,
+                                topTrailingRadius: bord_radius
+                            )
+                        )
+                    //.shadow(radius: 10, x:10, y:10)
+                    Text(seccion.nombre)
+                        .frame(alignment: .leading)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                        .padding(.leading,32)
+                }
+                ZStack{
+                    Color(seccion.color)
+                    
+                        .opacity(0.25)
+                    
+                        .frame(width: width, height: height * Double((((seccion.almanaque?.count ?? 1)+1)/2)))
+                    
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: bord_radius,
+                                bottomTrailingRadius: bord_radius,
+                                topTrailingRadius: 0
+                            )
+                        )
+                    
+                    VStack(spacing:55) {
+                        // Usamos el índice del arreglo y creamos grupos de 2
+                        if let almanaque = seccion.almanaque {
+                            ForEach(0..<almanaque.count/2 + (almanaque.count % 2 == 0 ? 0 : 1), id: \.self) { index in
+                                HStack {
+                                    // Primer exhibición
+                                    ZStack {
+                                        //Text(seccion.exhibiciones[index * 2].nombre)
+                                        IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: almanaque[index*2].icono_name))
+                                    }
+                                    
+                                    
+                                    // Segundo exhibición (si existe)
+                                    if index * 2 + 1 < almanaque.count {
+                                        Spacer()
+                                        ZStack {
+                                            //Text(seccion.exhibiciones[index * 2 + 1].nombre)
+                                            IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: almanaque[index*2+1].icono_name))
+                                        }
+                                    }
+                                }
+                                .frame(width: width*0.8)
+                            }
+                        } else {
+                            Text("Nadota!!")
+                        }
+                    }
+                    
+                }.offset(y:-20)
+            }
+            .padding(.bottom,20)
         }
         
-        .padding(.bottom,20)
     }
+    
+    func definirIconos(seccion: Binding<Seccion>) async {
+        print("Cargando almanaque para \(seccion.nombre)...")
+        
+        for exhibicion in seccion.wrappedValue.exhibiciones {
+            
+            let hasObtainedIcon = await hasObtainedIcon(exhibicion_id: exhibicion.id)
+            
+            let icono = exhibicion.icono
+            
+
+            if let icono {
+                print("Icono encontrado para \(exhibicion.nombre)")
+                
+                if hasObtainedIcon{
+                    print("Icono obtenido!!")
+                    let newIcon = IconoAlmanaque(exhibicion: exhibicion, icono_name: icono)
+                    if seccion.wrappedValue.almanaque == nil {
+                        seccion.wrappedValue.almanaque = []
+                    }
+                    
+                    seccion.wrappedValue.almanaque?.append(newIcon)
+                }else{
+                    print("Icono no obtenido")
+                }
+            }
+        }
+    }
+    
 }
 
 #Preview {
