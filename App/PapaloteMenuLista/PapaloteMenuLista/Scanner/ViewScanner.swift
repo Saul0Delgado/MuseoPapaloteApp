@@ -53,6 +53,15 @@ struct ViewScanner: View {
             }
         )
         .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $showIconSheet) {
+            if let iconImage = detectedIconImage {
+                ViewIcono(
+                    iconName: detectedIconName,
+                    iconImage: iconImage,
+                    isShowing: $showIconSheet
+                )
+            }
+        }
     }
     
     func handleIconDetection(iconName: String, iconImage: UIImage) {
