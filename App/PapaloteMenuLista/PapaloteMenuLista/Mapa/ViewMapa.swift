@@ -24,8 +24,8 @@ struct ViewMapa: View {
                 .ignoresSafeArea()
                 VStack {
                     Picker ("Selecciona un piso", selection: $pisoActual) {
-                        Text("Piso 1").tag("Piso1")
-                        Text("Piso 2").tag("Piso2")
+                        Text("Planta Alta").tag("Piso1")
+                        Text("Planta Baja").tag("Piso2")
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()
@@ -47,6 +47,7 @@ struct ViewMapa: View {
                         }
                     }
                     .id(mapID)
+                    
                     .padding()
                 }
                 .sheet(isPresented: $showDetailView) {
@@ -88,6 +89,13 @@ struct ViewMapa: View {
         if let zona = museoInfo.secciones.first(where: { $0.nombre == id })  {
             return Color(zona.color)
         }
+        if id == "Arramberi" {
+            return Color("color_Arramberi")
+        }
+        
+        if id == "Criaturas Magnificas2" {
+            return Color("color_criaturas")
+        }
         return .gray
     }
 }
@@ -96,21 +104,3 @@ struct ViewMapa: View {
     ViewMapa(topBarType : .general)
 }
 
-
-/*
-let zonas: [ZonaMapa] = [
-    // Piso 1
-    ZonaMapa(id: "PequeñosBosque", nombre: "Pequeños Bosque", color: "#55cdd0", numeroDeExhibiciones: 5),
-    ZonaMapa(id: "ExpoTemp", nombre: "Expo Temporal", color: "#cce9c6", numeroDeExhibiciones: 2),
-    ZonaMapa(id: "PasilloDinos", nombre: "Pasillo Dinosaurios", color: "#777568", numeroDeExhibiciones: 4),
-    ZonaMapa(id: "Comunico", nombre: "Comunico", color: "#286ebb", numeroDeExhibiciones: 3),
-    ZonaMapa(id: "Pertenezco", nombre: "Pertenezco", color: "#8eca48", numeroDeExhibiciones: 1),
-    
-    // Piso 2
-    ZonaMapa(id: "Comprendo", nombre: "Comprendo", color: "#7946a4", numeroDeExhibiciones: 3),
-    ZonaMapa(id: "Dinosaurios", nombre: "Dinosaurios", color: "#ffda9b", numeroDeExhibiciones: 6),
-    ZonaMapa(id: "Soy", nombre: "Soy", color: "#ff311b", numeroDeExhibiciones: 2),
-    ZonaMapa(id: "PequeñosAgua", nombre: "Pequeños Agua", color: "#55cdd0", numeroDeExhibiciones: 5),
-    ZonaMapa(id: "Expreso", nombre: "Expreso", color: "#ff7923", numeroDeExhibiciones: 4)
-]
-*/

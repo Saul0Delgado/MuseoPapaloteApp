@@ -11,6 +11,16 @@ struct SceneModelView: UIViewRepresentable {
         sceneView.allowsCameraControl = true
         sceneView.autoenablesDefaultLighting = true
         sceneView.backgroundColor = UIColor.white
+        
+        let cameraNode  = SCNNode()
+        cameraNode.camera = SCNCamera()
+        cameraNode.position = SCNVector3(0,0,20)
+        sceneView.scene?.rootNode.addChildNode(cameraNode)
+        sceneView.pointOfView = cameraNode
+        
+        sceneView.defaultCameraController.maximumVerticalAngle = 0
+        sceneView.defaultCameraController.minimumVerticalAngle = 0
+        sceneView.defaultCameraController.maximumHorizontalAngle = 360
 
         // Intentar cargar el modelo 3D correspondiente
         if let objectNode = loadModel(named: modelName) {
@@ -24,7 +34,15 @@ struct SceneModelView: UIViewRepresentable {
         return sceneView
     }
 
-    func updateUIView(_ uiView: SCNView, context: Context) {}
+    func updateUIView(_ uiView: SCNView, context: Context) {
+          // Reinicia la escena con un nuevo modelo si el nombre cambia
+          uiView.scene?.rootNode.childNodes.forEach { $0.removeFromParentNode() }
+          if let objectNode = loadModel(named: modelName) {
+              objectNode.position = SCNVector3(0, 0, 0)
+              objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
+              uiView.scene?.rootNode.addChildNode(objectNode)
+          }
+      }
 
     // Cargar el modelo 3D con nombre específico
     func loadModel(named name: String) -> SCNNode? {

@@ -166,7 +166,7 @@ struct ViewZonaDetail: View {
                 .cornerRadius(5)
               
         } else {
-            Image("placeholder_image")
+            Image("image_placeholder")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 250, height: 150)
