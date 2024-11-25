@@ -34,17 +34,17 @@ struct ContentView: View {
                 hasAppeared = true
                 print("appearing")
                 //Borrar Data Local para hacer fetch
-                clearAllLocalData()
-
-                
-                //Cargar cuenta activa
                 let user = UserManage.loadActiveUser()
                 
-                if user == nil {
-                    isLoggedIn = false
-                } else {
+                clearAllLocalData()
+                
+                if let userActive = user {
                     isLoggedIn = true
+                    UserManage.saveActiveUser(userActive)
+                }else{
+                    isLoggedIn = false
                 }
+                
                 
                 //Activar tutorial de Scanner
                 UserDefaults.standard.set(false, forKey: "hasSeenScannerTutorial")

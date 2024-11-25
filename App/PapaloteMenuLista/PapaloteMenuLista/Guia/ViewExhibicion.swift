@@ -52,7 +52,7 @@ struct ViewExhibicion: View {
             
             
             do {
-                let response = try await supabase
+                let _ = try await supabase
                     .from("feedback")
                     .insert(dataToInsert)
                     .execute()
@@ -88,7 +88,7 @@ struct ViewExhibicion: View {
                             Image(exhibicion.image_name ?? "image_placeholder")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(height: 330)
+                                .frame(width: UIScreen.main.bounds.width,height: 330)
                                 .clipped()
                             LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0), Color.black]),
                                            startPoint: .top, endPoint: .bottom)
