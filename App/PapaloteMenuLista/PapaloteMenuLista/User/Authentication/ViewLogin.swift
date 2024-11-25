@@ -307,6 +307,12 @@ struct Register: View {
                     AlertMessage = "Confirme su contraseña, por favor."
                     showingAlert = true
                 }
+                else if password.count < 6 {
+                    // Contraseñas deben tener al menos 6 caracteres
+                    AlertTitle = "Contraseña Poco Segura"
+                    AlertMessage = "La contraseña debe contener al menos 6 caracteres."
+                    showingAlert = true
+                }
                 else if confirmPassword != password {
                     //No hay confirmContraseña, enviar error contraseña empty
                     AlertTitle = "Contraseñas Diferentes"

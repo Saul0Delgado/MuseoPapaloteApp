@@ -10,7 +10,7 @@ import SwiftUI
 struct ViewAlmanaqueSeccion: View {
     @State var seccion : Seccion
     
-    let height = 160.0
+    let height = 180.0
     let width = UIScreen.main.bounds.width - 50
     let bord_radius = 20.0
     
@@ -18,15 +18,67 @@ struct ViewAlmanaqueSeccion: View {
     
     
     var body: some View {
+        
         if isLoading{
             
-            Text("Loading")
-                .onAppear{
-                    Task{
-                        await definirIconos(seccion: $seccion)
-                        isLoading = false
+            VStack(spacing:0) {
+                
+                ZStack (alignment: .leading) {
+                    Rectangle()
+                        .fill(Color(seccion.color))
+                        .frame(width: width, height: 60)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: bord_radius,
+                                bottomLeadingRadius: bord_radius,
+                                bottomTrailingRadius: bord_radius,
+                                topTrailingRadius: bord_radius
+                            )
+                        )
+                    //.shadow(radius: 10, x:10, y:10)
+                    Text(seccion.nombre)
+                        .frame(alignment: .leading)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
+                        .padding(.leading,32)
+                }
+                ZStack{
+                    Color(seccion.color)
+                    
+                        .opacity(0.25)
+                    
+                        .frame(width: width, height: height * Double((((seccion.almanaque?.count ?? 1)+1)/2)))
+                    
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: bord_radius,
+                                bottomTrailingRadius: bord_radius,
+                                topTrailingRadius: 0
+                            )
+                        )
+                    
+                    VStack{
+                        Text("Cargando")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black.opacity(0.5))
+                            .padding(.bottom, 10)
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .black.opacity(0.5)))
+                            .scaleEffect(2.0, anchor: .center)
                     }
                 }
+                .offset(y:-20)
+            }
+            .onAppear{
+                Task{
+                    await definirIconos(seccion: $seccion)
+                    isLoading = false
+                }
+            }
+                
             
         } else {
             VStack(spacing:0) {
@@ -74,7 +126,8 @@ struct ViewAlmanaqueSeccion: View {
                                     // Primer exhibición
                                     ZStack {
                                         //Text(seccion.exhibiciones[index * 2].nombre)
-                                        IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: almanaque[index*2].icono_name))
+                                        IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: almanaque[index*2].icono_name)
+                                        )
                                     }
                                     
                                     
@@ -90,7 +143,9 @@ struct ViewAlmanaqueSeccion: View {
                                 .frame(width: width*0.8)
                             }
                         } else {
-                            Text("Nadota!!")
+                            Text("No has desbloqueado íconos\npara esta exhibicion.")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.black.opacity(0.5))
                         }
                     }
                     
@@ -101,8 +156,9 @@ struct ViewAlmanaqueSeccion: View {
         
     }
     
+    
     func definirIconos(seccion: Binding<Seccion>) async {
-        print("Cargando almanaque para \(seccion.nombre)...")
+        print("Cargando almanaque para \(seccion.wrappedValue.nombre)...")
         
         for exhibicion in seccion.wrappedValue.exhibiciones {
             

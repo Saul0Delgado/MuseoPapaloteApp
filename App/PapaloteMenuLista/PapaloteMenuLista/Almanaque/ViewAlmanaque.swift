@@ -18,6 +18,7 @@ struct ViewAlmanaque: View {
     
     var body: some View {
         VStack{
+            
             if isLoading {
                 //Loading
                 VStack {
@@ -34,37 +35,45 @@ struct ViewAlmanaque: View {
                         .offset(y:-70)
                     Spacer()
                 }
+                //Top Bar
+                .safeAreaInset(edge: .top) {
+                    PapaloteTopBar(color:Color(Color.accent), type: topBarType)
+                }
             }
             else{
                 ZStack {
                     Color.white
                         .ignoresSafeArea()
-                    VStack {
-                        ScrollView {
-                            Text("Zonas")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .padding(.leading, 25)
-                                .padding(.top, 40.0)
-                                .padding(.bottom, 0)
-                                .frame(maxWidth: .infinity,alignment: .leading)
-                            ForEach(secciones, id: \.id) { item in
-                                NavigationLink(destination: ViewSeccion(seccion: item)) {
-                                    ViewAlmanaqueSeccion(seccion: item)
+                    NavigationStack {
+                        VStack {
+                            ScrollView {
+                                
+                                Text("Zonas")
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .padding(.leading, 25)
+                                    .padding(.top, 40.0)
+                                    .padding(.bottom, 0)
+                                    .frame(maxWidth: .infinity,alignment: .leading)
+                                ForEach(secciones, id: \.id) { item in
+                                    NavigationLink(destination: ViewSeccion(seccion: item)) {
+                                        ViewAlmanaqueSeccion(seccion: item)
+                                    }
                                 }
+                                Rectangle()
+                                    .fill(.clear)
+                                    .frame(height:120)
                             }
-                            Rectangle()
-                                .fill(.clear)
-                                .frame(height:120)
+                        }
+                        //Top Bar
+                        .safeAreaInset(edge: .top) {
+                            PapaloteTopBar(color:Color(Color.accent), type: topBarType)
                         }
                     }
                 }
             }
         }
-        //Top Bar
-        .safeAreaInset(edge: .top) {
-            PapaloteTopBar(color:Color(Color.accent), type: topBarType)
-        }
+        
         //Set navbar color
         .onAppear{
             colorNavBar.color = Color.accent
@@ -81,9 +90,11 @@ struct ViewAlmanaque: View {
                     
                 }else{
                     print("Ya hay datos, no fetch")
-                    isLoading = false
+                    
                 }
                 
+                
+                isLoading = false
             }
         }
         //Slide para ir atras
@@ -96,6 +107,36 @@ struct ViewAlmanaque: View {
         )
         .navigationBarBackButtonHidden(true)
     }
+    
+    /*
+    func definirIconos(seccion: Binding<Seccion>) async {
+        print("Cargando almanaque para \(seccion.wrappedValue.nombre)...")
+        
+        for exhibicion in seccion.wrappedValue.exhibiciones {
+            
+            let hasObtainedIcon = await hasObtainedIcon(exhibicion_id: exhibicion.id)
+            
+            let icono = exhibicion.icono
+            
+
+            if let icono {
+                print("Icono encontrado para \(exhibicion.nombre)")
+                
+                if hasObtainedIcon{
+                    print("Icono obtenido!!")
+                    let newIcon = IconoAlmanaque(exhibicion: exhibicion, icono_name: icono)
+                    if seccion.wrappedValue.almanaque == nil {
+                        seccion.wrappedValue.almanaque = []
+                    }
+                    
+                    seccion.wrappedValue.almanaque?.append(newIcon)
+                }else{
+                    print("Icono no obtenido")
+                }
+            }
+        }
+    }
+    */
 }
 
 #Preview {
