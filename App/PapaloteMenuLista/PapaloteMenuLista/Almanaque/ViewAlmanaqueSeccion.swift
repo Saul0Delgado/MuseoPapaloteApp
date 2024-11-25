@@ -69,7 +69,7 @@ struct ViewAlmanaqueSeccion: View {
                                 Spacer()
                                 ZStack {
                                     //Text(seccion.exhibiciones[index * 2 + 1].nombre)
-                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Bicho"))
+                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Especies"))
                                 }
                             }
                         }
