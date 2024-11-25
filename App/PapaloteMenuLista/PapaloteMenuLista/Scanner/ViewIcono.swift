@@ -1,6 +1,6 @@
 import SwiftUI
 struct ViewIcono: View {
-    let nameToId: [String: Int]
+    //let nameToId: [String: Int]
     @Binding var selectedTab : Int
     @Environment(\.dismiss) var dismiss
     
@@ -28,9 +28,9 @@ struct ViewIcono: View {
                 Task {
                     let user_id = UserManage.loadActiveUser()?.userId ?? UUID()
                     
-                    let exh_id = nameToId[iconName]
+                    //let exh_id = nameToId[iconName]
                     
-                    await InsertRegistro(user_id: UUID, exhibicion_id: Int)
+//                    await InsertRegistro(user_id: UUID, exhibicion_id: Int)
                     
                     selectedTab = 3
                     dismiss()
@@ -48,11 +48,9 @@ struct ViewIcono: View {
         .padding()
         .onAppear{
             let sec = MuseoInfo.shared.secciones
-            nameToId: [String: Int] = sec
-                .flatMap { $0.exhibiciones }
-                .reduce(into: [String: Int]()) { dict, icon in
-                    dict[icon.nombre] = icon.id
-            }
+//            nameToId: [String: Int] = sec.flatMap { $0.exhibiciones }.reduce(into: [String: Int]()) { dict, icon in
+//                    dict[icon.nombre] = icon.id
+//            }
         }
     }
     
