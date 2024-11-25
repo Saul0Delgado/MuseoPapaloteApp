@@ -14,18 +14,25 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
     var captureSession: AVCaptureSession!
     var photoOutput: AVCapturePhotoOutput!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    
+    var albumViewModel: IconAlbumViewModel? // Optional to prevent crashes
+    var onIconDetected: ((String, UIImage) -> Void)?
+    
+    
 
     // Buttons to capture photo
     let captureButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Capture", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.setTitle("Capturar", for: .normal)
+        button.backgroundColor = .accent
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 15
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.transform = CGAffineTransform(scaleX: 1.20, y: 1.20) // Increase size by 1.5x
+
         return button
     }()
-
+    
     // Results view to show matches
     let resultsLabel: UILabel = {
         let label = UILabel()
@@ -146,6 +153,11 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
             if let topResult = results.first {
                 DispatchQueue.main.async {
                     self.resultsLabel.text = "Detected: \(topResult.identifier) (\(Int(topResult.confidence * 100))%)"
+                    if topResult.identifier != "Negative"{
+                        
+                        self.albumViewModel!.updateIcon(with: topResult.identifier, image: UIImage(named: "image_placeholder")!)
+                        self.onIconDetected?(topResult.identifier, image)
+                    }
                 }
             }
         }
