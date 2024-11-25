@@ -19,8 +19,8 @@ struct IconItem: Identifiable {
 
 class IconAlbumViewModel: ObservableObject {
     @Published var icons: [IconItem] = [
-        IconItem(id: 1, placeholderImage: UIImage(named: "Icono_Viento")!),
-        IconItem(id: 2, placeholderImage: UIImage(named: "Icono_Especies")!),
+        IconItem(id: 1, placeholderImage: UIImage(named: "img_Viento")!),
+        IconItem(id: 2, placeholderImage: UIImage(named: "img_Especies")!),
         IconItem(id: 3, placeholderImage: UIImage(named: "Icono_Tutorial")!)
     ]
     
