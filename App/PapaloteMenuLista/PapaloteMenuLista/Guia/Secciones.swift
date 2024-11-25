@@ -17,16 +17,6 @@ struct DatabaseSeccion: Codable {
     let descripcion: String
 }
 
-// Estructura intermedia para decodificación de la tabla exhibicion
-struct DatabaseExhibicion: Codable {
-    let exhib_id: Int
-    let nombre: String
-    let descripcion: String?
-    let especial: Bool
-    let featured: Bool
-    let image_name: String?
-    let model_file: String?
-}
 
 struct Seccion: Identifiable, Codable {
     var id: Int
@@ -37,6 +27,22 @@ struct Seccion: Identifiable, Codable {
     var exhibiciones: [Exhibicion]
     var objetivos: [String]
 }
+
+// Estructura intermedia para decodificación de la tabla exhibicion
+struct DatabaseExhibicion: Codable {
+    let exhib_id: Int
+    let nombre: String
+    let descripcion: String?
+    let especial: Bool
+    let featured: Bool
+    let image_name: String?
+    let model_file: String?
+    let preguntas: [String]?
+    let objetivos: [String]?
+    let interaccion: [String]?
+    let datosCuriosos: [String]?
+}
+
 
 struct Exhibicion: Identifiable, Codable {
     var id: Int
@@ -203,7 +209,7 @@ func fetchInteracciones(for exhibID: Int) async -> [String] {
     do {
         let response: PostgrestResponse<[DatabaseInteraccion]> = try await supabase
             .from("interaccion_exhibicion")
-            .select("interaccion, paso")
+            .select("interaccion")
             .eq("exhib_id", value: exhibID)
             .order("paso", ascending: true)
             .execute()
@@ -244,7 +250,7 @@ func fetchObjetivos(for exhibID: Int) async -> [String] {
 
     // Si no hay datos locales o es necesario actualizar, fetch remoto
     do {
-        let response: PostgrestResponse<[String]> = try await supabase
+        let response: PostgrestResponse<[DatabaseObjetivo]> = try await supabase
             .from("objetivo_exhibicion")
             .select("objetivo")
             .eq("exhib_id", value: exhibID)
@@ -257,23 +263,25 @@ func fetchObjetivos(for exhibID: Int) async -> [String] {
         LocalStorage.save(objetivos, forKey: localKey)
         UserDefaults.standard.set(Date(), forKey: "lastUpdatedObjetivos_\(exhibID)")
 
-        return objetivos
+        return response.value.map { $0.objetivo } // Extrae los valores de la clave "objetivo"
     } catch {
         print("Error al obtener objetivos:", error)
         return []
     }
 }
-
+struct DatabaseObjetivo: Codable {
+    let objetivo: String
+}
 func fetchDatosCuriosos(for exhibID: Int) async -> [String] {
     do {
         let response: PostgrestResponse<[DatabaseDatoCurioso]> = try await supabase
-            .from("datocurioso_exihibicion")
+            .from("datocurioso_exhibicion")
             .select("dato_curioso")
             .eq("exhib_id", value: exhibID)
             .eq("is_selected", value: true)
             .execute()
 
-        return response.value.map { $0.dato }
+        return response.value.map { $0.dato_curioso }
     } catch {
         print("Error al obtener datos curiosos:", error)
         return []
@@ -282,12 +290,11 @@ func fetchDatosCuriosos(for exhibID: Int) async -> [String] {
 
 // Define the structure for decoding "dato_curioso" table
 struct DatabaseDatoCurioso: Codable {
-    let dato: String
+    let dato_curioso: String
 }
 
 struct DatabaseInteraccion: Codable {
     let interaccion: String
-    let paso: Int
 }
 
 struct DatabasePregunta: Codable {
@@ -332,6 +339,7 @@ struct UpdateRecord: Codable {
     let last_updated: String
 }
 
+// MARK  Objetivos Zonas
 func fetchObjetivosZona(for zonaID: Int) async -> [String] {
     do {
         let response: PostgrestResponse<[DatabaseObjetivoZona]> = try await supabase
@@ -347,7 +355,6 @@ func fetchObjetivosZona(for zonaID: Int) async -> [String] {
         return []
     }
 }
-
 // Estructura de decodificación para los objetivos de la zona
 struct DatabaseObjetivoZona: Codable {
     let objetivo: String
