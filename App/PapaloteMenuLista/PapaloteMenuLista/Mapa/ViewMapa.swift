@@ -47,6 +47,7 @@ struct ViewMapa: View {
                         }
                     }
                     .id(mapID)
+                    
                     .padding()
                 }
                 .sheet(isPresented: $showDetailView) {
@@ -89,11 +90,11 @@ struct ViewMapa: View {
             return Color(zona.color)
         }
         if id == "Arramberi" {
-            return Color("color_Arramberi") // Color específico de Arramberi
+            return Color("color_Arramberi")
         }
         
         if id == "Criaturas Magnificas2" {
-            return Color("color_criaturas") // Color específico de Arramberi
+            return Color("color_criaturas")
         }
         return .gray
     }

@@ -1,10 +1,7 @@
 
-//
 //  Secciones.swift
 //  PapaloteMenuLista
-//
-//  Created by alumno on 19/11/24.
-//
+
 
 import Foundation
 import SwiftUICore
@@ -78,16 +75,23 @@ func fetchSecciones() async -> [Seccion] {
             .execute()
         
         let databaseSecciones = response.value
-        let fetchedSecciones = databaseSecciones.map { dbSeccion in
-            Seccion(
+        
+        var fetchedSecciones: [Seccion] = []
+        for dbSeccion in databaseSecciones{
+            
+            let objetivos = await fetchObjetivosZona(for: dbSeccion.id)
+            
+            let seccion = Seccion(
                 id: dbSeccion.id,
                 nombre: dbSeccion.nombre,
                 color: dbSeccion.color,
                 image_url: dbSeccion.image_url,
                 desc: dbSeccion.descripcion,
                 exhibiciones: [], // Las exhibiciones se cargarán por separado
-                objetivos: []     // Los objetivos se cargarán por separado
+                objetivos:  objetivos     // Los objetivos se cargarán por separado
             )
+            
+            fetchedSecciones.append(seccion)
         }
 
         // Guardar datos localmente
@@ -159,20 +163,29 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
             .execute()
         
         let databaseExhibiciones = response.value
-        let fetchedExhibiciones = databaseExhibiciones.map { dbExhibicion in
-            Exhibicion(
+        
+        
+        var fetchedExhibiciones: [Exhibicion] = []
+        for dbExhibicion in databaseExhibiciones {
+            let objetivos = await fetchObjetivos(for: dbExhibicion.exhib_id)
+            let preguntas = await fetchPreguntas(for: dbExhibicion.exhib_id)
+            let interaccion = await fetchInteracciones(for: dbExhibicion.exhib_id)
+            let datosCuriosos = await fetchDatosCuriosos(for: dbExhibicion.exhib_id)
+
+            let exhibicion = Exhibicion(
                 id: dbExhibicion.exhib_id,
                 nombre: dbExhibicion.nombre,
-                desc: dbExhibicion.descripcion ?? "Esta actividad no tiene descripcion",
+                desc: dbExhibicion.descripcion ?? "Esta actividad no tiene descripción",
                 especial: dbExhibicion.especial,
                 featured: dbExhibicion.featured,
-                objetivos: [],
-                preguntas: [],
-                datosCuriosos: [],
-                interaccion: [],
+                objetivos: objetivos,
+                preguntas: preguntas,
+                datosCuriosos: datosCuriosos,
+                interaccion: interaccion,
                 image_name: dbExhibicion.image_name ?? "image_placeholder",
                 model_file: dbExhibicion.model_file
             )
+            fetchedExhibiciones.append(exhibicion)
         }
 
         // Guardar datos localmente
@@ -185,6 +198,39 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
         return []
     }
 }
+
+func fetchInteracciones(for exhibID: Int) async -> [String] {
+    do {
+        let response: PostgrestResponse<[DatabaseInteraccion]> = try await supabase
+            .from("interaccion_exhibicion")
+            .select("interaccion, paso")
+            .eq("exhib_id", value: exhibID)
+            .order("paso", ascending: true)
+            .execute()
+
+        return response.value.map { $0.interaccion }
+    } catch {
+        print("Error al obtener interacciones:", error)
+        return []
+    }
+}
+
+func fetchPreguntas(for exhibID: Int) async -> [String] {
+    do {
+        let response: PostgrestResponse<[DatabasePregunta]> = try await supabase
+            .from("pregunta_exhibicion")
+            .select("pregunta")
+            .eq("exhib_id", value: exhibID)
+            .eq("is_selected", value: true)
+            .execute()
+
+        return response.value.map { $0.pregunta }
+    } catch {
+        print("Error al obtener preguntas:", error)
+        return []
+    }
+}
+
 
 func fetchObjetivos(for exhibID: Int) async -> [String] {
     let localKey = "objetivos_\(exhibID)"
@@ -218,9 +264,41 @@ func fetchObjetivos(for exhibID: Int) async -> [String] {
     }
 }
 
+func fetchDatosCuriosos(for exhibID: Int) async -> [String] {
+    do {
+        let response: PostgrestResponse<[DatabaseDatoCurioso]> = try await supabase
+            .from("datocurioso_exihibicion")
+            .select("dato_curioso")
+            .eq("exhib_id", value: exhibID)
+            .eq("is_selected", value: true)
+            .execute()
+
+        return response.value.map { $0.dato }
+    } catch {
+        print("Error al obtener datos curiosos:", error)
+        return []
+    }
+}
+
+// Define the structure for decoding "dato_curioso" table
+struct DatabaseDatoCurioso: Codable {
+    let dato: String
+}
+
+struct DatabaseInteraccion: Codable {
+    let interaccion: String
+    let paso: Int
+}
+
+struct DatabasePregunta: Codable {
+    let pregunta: String
+}
+
+
 func shouldUpdate(entityName: String, lastLocalUpdate: Date?) async -> Bool {
     guard let lastLocalUpdate = lastLocalUpdate else {
         // Si no hay una fecha de última actualización local, forzar fetch
+        print("🛑 No local update date found for \(entityName). Fetch required.")
         return true
     }
     
@@ -238,6 +316,8 @@ func shouldUpdate(entityName: String, lastLocalUpdate: Date?) async -> Bool {
         
         // Compara las fechas de actualización
         if let serverLastUpdated = ISO8601DateFormatter().date(from: serverUpdate.last_updated) {
+            print("📅 Server update for \(entityName): \(serverLastUpdated), Local: \(lastLocalUpdate)")
+
             return serverLastUpdated > lastLocalUpdate
         }
     } catch {
@@ -250,4 +330,25 @@ func shouldUpdate(entityName: String, lastLocalUpdate: Date?) async -> Bool {
 struct UpdateRecord: Codable {
     let entity_name: String
     let last_updated: String
+}
+
+func fetchObjetivosZona(for zonaID: Int) async -> [String] {
+    do {
+        let response: PostgrestResponse<[DatabaseObjetivoZona]> = try await supabase
+            .from("objetivo_zona")
+            .select("objetivo")
+            .eq("id_zona", value: zonaID)
+            .eq("isActive", value: true)
+            .execute()
+        
+        return response.value.map { $0.objetivo }
+    } catch {
+        print("Error al obtener objetivos de la zona \(zonaID):", error)
+        return []
+    }
+}
+
+// Estructura de decodificación para los objetivos de la zona
+struct DatabaseObjetivoZona: Codable {
+    let objetivo: String
 }

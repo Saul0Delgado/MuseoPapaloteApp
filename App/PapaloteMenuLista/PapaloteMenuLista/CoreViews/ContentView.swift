@@ -33,6 +33,9 @@ struct ContentView: View {
             if !hasAppeared {
                 hasAppeared = true
                 print("appearing")
+                //Borrar Data Local para hacer fetch
+                clearAllLocalData()
+
                 
                 //Cargar cuenta activa
                 let user = UserManage.loadActiveUser()
@@ -67,4 +70,12 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+func clearAllLocalData() {
+    if let appDomain = Bundle.main.bundleIdentifier {
+        UserDefaults.standard.removePersistentDomain(forName: appDomain)
+        UserDefaults.standard.synchronize() // Asegúrate de sincronizar para aplicar los cambios
+    }
+    print("🧹 Todos los datos locales han sido eliminados.")
 }

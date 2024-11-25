@@ -14,8 +14,7 @@ struct ViewSeccion: View {
     let leftPadding : CGFloat = 50
     let wholeScreen : CGFloat = UIScreen.main.bounds.width
     let seccion : Seccion
-    
-    //let verdePapalote : UIColor = UIColor(red: 198/256, green: 212/256, blue: 68/256, alpha: 1)
+
     
     //View
     var body: some View {
@@ -159,6 +158,10 @@ struct ViewSeccion: View {
                         
                         //MARK: Objetivos
                         VStack(spacing:0){
+                            
+                            
+                            
+                            
                             HStack {
                                 
                                 Text("Objetivos de esta zona")
