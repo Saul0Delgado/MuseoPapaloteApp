@@ -2,6 +2,7 @@ import SwiftUI
 struct ViewIcono: View {
     var iconName: String // Name of the detected icon
     var iconImage: UIImage // Image of the detected icon
+    @State private var reloadKey = UUID()
     
     @Binding var isShowing: Bool // Binding to dismiss the sheet
     
@@ -19,9 +20,10 @@ struct ViewIcono: View {
                 .padding()
             
             Button(action: {
-                isShowing.toggle()
+                ViewAlmanaque(topBarType: .general)
+                    .id(reloadKey)
             }) {
-                Text("Close")
+                Text("Ver en Álbum")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -30,11 +32,11 @@ struct ViewIcono: View {
             }
         }
         .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color(UIColor.systemBackground))
-                .shadow(radius: 10)
-        )
+        //.background(
+            //RoundedRectangle(cornerRadius: 20)
+              //  .fill(Color(UIColor.systemBackground))
+                //.shadow(radius: 10)
+        //)
     }
 }
 

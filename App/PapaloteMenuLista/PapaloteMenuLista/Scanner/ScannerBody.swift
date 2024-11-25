@@ -153,7 +153,9 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
             if let topResult = results.first {
                 DispatchQueue.main.async {
                     self.resultsLabel.text = "Detected: \(topResult.identifier) (\(Int(topResult.confidence * 100))%)"
-                    if topResult.identifier != "Negative" && topResult.confidence > 95 {
+                    if topResult.identifier == "Negative" || topResult.confidence < 0.95 {
+                        self.onIconDetected?("No se encontró ningún ícono. Asegura de que el ícono esté claro y completo en la foto e intenta de nuevo.", image)
+                    } else {
                         self.albumViewModel!.updateIcon(with: topResult.identifier, image: UIImage(named: "image_placeholder")!)
                         self.onIconDetected?(topResult.identifier, image)
                     }

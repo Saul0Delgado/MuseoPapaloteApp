@@ -60,7 +60,7 @@ struct ViewAlmanaqueSeccion: View {
                             // Primer exhibición
                             ZStack {
                                 //Text(seccion.exhibiciones[index * 2].nombre)
-                                IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Viento"))
+                                IconPlaceholderView(isUnlocked: false, placeholderIcon: UIImage(imageLiteralResourceName: "img_Viento"))
                             }
                             
                             
@@ -69,7 +69,7 @@ struct ViewAlmanaqueSeccion: View {
                                 Spacer()
                                 ZStack {
                                     //Text(seccion.exhibiciones[index * 2 + 1].nombre)
-                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "Icono_Especies"))
+                                    IconPlaceholderView(isUnlocked: true, placeholderIcon: UIImage(imageLiteralResourceName: "img_Especies"))
                                 }
                             }
                         }
