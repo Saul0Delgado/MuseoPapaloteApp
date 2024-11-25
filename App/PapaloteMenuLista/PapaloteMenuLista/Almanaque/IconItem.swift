@@ -19,8 +19,8 @@ struct IconItem: Identifiable {
 
 class IconAlbumViewModel: ObservableObject {
     @Published var icons: [IconItem] = [
-        IconItem(id: 1, placeholderImage: UIImage(named: "img_Viento")!),
-        IconItem(id: 2, placeholderImage: UIImage(named: "img_Especies")!),
+        IconItem(id: 1, placeholderImage: UIImage(named: "Icono_Viento")!),
+        IconItem(id: 2, placeholderImage: UIImage(named: "Icono_Especies")!),
         IconItem(id: 3, placeholderImage: UIImage(named: "Icono_Tutorial")!)
     ]
     
@@ -29,6 +29,13 @@ class IconAlbumViewModel: ObservableObject {
         "Bug Icon": 2,
         "Fire Icon": 3
     ]
+    
+    func getIdExhibicionWithIcon(name: String) -> Int {
+        if let id = nameToId[name] {
+            return id
+        }
+        return -1
+    }
 
     func updateIcon(with name: String, image: UIImage) {
         if let id = nameToId[name] {

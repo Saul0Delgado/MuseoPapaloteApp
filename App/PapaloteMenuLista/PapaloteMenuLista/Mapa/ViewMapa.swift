@@ -16,12 +16,17 @@ struct ViewMapa: View {
     @ObservedObject var colorNavBar = NavBarColor.shared
     @ObservedObject var museoInfo = MuseoInfo.shared
     
+    @State var navigateToExhibicion = false
+    @State var exhibicionToNavigate = Exhibicion(id: 1, nombre: "Error!", desc: "Error!", especial: false, featured: false, objetivos: [], preguntas: [], datosCuriosos: [], interaccion: [])
+    
+    
     let topBarType : TopBarType
     
     var body: some View {
-        ZStack{
-            Color.white
-                .ignoresSafeArea()
+        NavigationStack {
+            ZStack{
+                Color.white
+                    .ignoresSafeArea()
                 VStack {
                     Picker ("Selecciona un piso", selection: $pisoActual) {
                         Text("Planta Alta").tag("Piso1")
@@ -52,35 +57,42 @@ struct ViewMapa: View {
                 }
                 .sheet(isPresented: $showDetailView) {
                     if let zona = selectedZona {
-                        ViewZonaDetail(zona: zona)
+                        ViewZonaDetail(navigateToExhibicion: $navigateToExhibicion,exhibiciontoNavigate: $exhibicionToNavigate,zona: zona)
                             .presentationDetents([.fraction(0.75)])
                             .presentationCornerRadius(30)
                             .presentationDragIndicator(.visible)
                     }
                 }
                 
-            
-        }
-        //Top Bar
-        .safeAreaInset(edge: .top) {
-            PapaloteTopBar(color:Color(Color.accent), type: topBarType)
-        }
-        //Set navbar color
-        .onAppear{
-            colorNavBar.color = Color.accent
-            Task {
-                await museoInfo.fetch(isLoading: .constant(false))
+                
+                
+                
+                
             }
-        }
-        //Slide para ir atras
-        .gesture(DragGesture(minimumDistance: 30)
-            .onEnded { value in
-                if value.translation.width > 0 {
-                    dismiss()
+            //Top Bar
+            .safeAreaInset(edge: .top) {
+                PapaloteTopBar(color:Color(Color.accent), type: topBarType)
+            }
+            //Set navbar color
+            .onAppear{
+                colorNavBar.color = Color.accent
+                Task {
+                    await museoInfo.fetch(isLoading: .constant(false))
                 }
             }
-        )
-        .navigationBarBackButtonHidden(true)
+            //Slide para ir atras
+            .gesture(DragGesture(minimumDistance: 30)
+                .onEnded { value in
+                    if value.translation.width > 0 {
+                        dismiss()
+                    }
+                }
+            )
+            .navigationBarBackButtonHidden(true)
+        }
+        .navigationDestination(isPresented: $navigateToExhibicion) {
+            ViewExhibicion(exhibicion: exhibicionToNavigate, color: Color(selectedZona?.color ?? "color_soy"))
+        }
     }
     
     

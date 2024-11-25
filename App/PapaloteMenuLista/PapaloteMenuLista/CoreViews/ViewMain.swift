@@ -26,10 +26,12 @@ struct ViewMain: View {
                     ViewHomeScreen()
                         .id(reloadKey)
                 case 1:
-                    ViewMapa(topBarType : .general)
-                        .id(reloadKey)
+                    NavigationStack {
+                        ViewMapa(topBarType : .general)
+                            .id(reloadKey)
+                    }
                 case 2:
-                    ViewScanner()
+                    ViewScanner(selectedTab: $selectedTab)
                         .id(reloadKey)
                 case 3:
                     ViewAlmanaque(topBarType:.general)

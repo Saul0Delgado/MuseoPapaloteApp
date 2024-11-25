@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ViewScanner: View {
+    @Binding var selectedTab : Int
+    
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
     @State var firstLaunch: Bool = false
@@ -56,6 +58,7 @@ struct ViewScanner: View {
         .sheet(isPresented: $showIconSheet) {
             if let iconImage = detectedIconImage {
                 ViewIcono(
+                    selectedTab: $selectedTab,
                     iconName: detectedIconName,
                     iconImage: iconImage,
                     isShowing: $showIconSheet
@@ -80,5 +83,5 @@ struct ViewScanner: View {
 }
 
 #Preview {
-    ViewScanner()
+    ViewScanner(selectedTab: .constant(2))
 }

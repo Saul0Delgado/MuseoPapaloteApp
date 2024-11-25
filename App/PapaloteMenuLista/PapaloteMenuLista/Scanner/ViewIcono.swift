@@ -1,5 +1,9 @@
 import SwiftUI
 struct ViewIcono: View {
+    let nameToId: [String: Int]
+    @Binding var selectedTab : Int
+    @Environment(\.dismiss) var dismiss
+    
     var iconName: String // Name of the detected icon
     var iconImage: UIImage // Image of the detected icon
     @State private var reloadKey = UUID()
@@ -20,8 +24,18 @@ struct ViewIcono: View {
                 .padding()
             
             Button(action: {
-                ViewAlmanaque(topBarType: .general)
-                    .id(reloadKey)
+                
+                Task {
+                    let user_id = UserManage.loadActiveUser()?.userId ?? UUID()
+                    
+                    let exh_id = nameToId[iconName]
+                    
+                    await InsertRegistro(user_id: UUID, exhibicion_id: Int)
+                    
+                    selectedTab = 3
+                    dismiss()
+                }
+                
             }) {
                 Text("Ver en Álbum")
                     .font(.headline)
@@ -32,14 +46,21 @@ struct ViewIcono: View {
             }
         }
         .padding()
-        //.background(
-            //RoundedRectangle(cornerRadius: 20)
-              //  .fill(Color(UIColor.systemBackground))
-                //.shadow(radius: 10)
-        //)
+        .onAppear{
+            let sec = MuseoInfo.shared.secciones
+            nameToId: [String: Int] = sec
+                .flatMap { $0.exhibiciones }
+                .reduce(into: [String: Int]()) { dict, icon in
+                    dict[icon.nombre] = icon.id
+            }
+        }
+    }
+    
+    func InsertRegistro(user_id: UUID, exhibicion_id: Int) async {
+        
     }
 }
 
 #Preview {
-    ViewIcono(iconName: "Wind Icon", iconImage: UIImage(named: "Icono_Viento") ?? UIImage(), isShowing: .constant(true))
+    ViewIcono(selectedTab: .constant(2), iconName: "Wind Icon", iconImage: UIImage(named: "Icono_Viento") ?? UIImage(), isShowing: .constant(true))
 }
