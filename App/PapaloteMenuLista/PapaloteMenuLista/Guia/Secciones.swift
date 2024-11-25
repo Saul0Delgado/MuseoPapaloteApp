@@ -170,7 +170,7 @@ func fetchExhibiciones(for zonaID: Int) async -> [Exhibicion] {
                 preguntas: [],
                 datosCuriosos: [],
                 interaccion: [],
-                image_name: dbExhibicion.image_name ?? "placeholder_image",
+                image_name: dbExhibicion.image_name ?? "image_placeholder",
                 model_file: dbExhibicion.model_file
             )
         }
