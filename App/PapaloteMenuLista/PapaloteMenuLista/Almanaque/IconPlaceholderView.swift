@@ -20,13 +20,7 @@ struct IconPlaceholderView: View {
     var body: some View {
         ZStack {
             // Frame
-            RoundedRectangle(cornerRadius: 1)
-                .stroke(isUnlocked ? Color.gray : Color.white, lineWidth: 0)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
-                )
-                .frame(width: 140, height: 110)
+
 
             // Content
             if isUnlocked, let image = unlockedImage {
@@ -47,29 +41,18 @@ struct IconPlaceholderView: View {
                     .frame(height: height*0.6)
                     .shadow(radius: 5, x: 7, y: 7)
                     .onTapGesture {
-                        showLargeImage = true // Show the sheet on tap
+                        withAnimation{
+                            showLargeImage = true // Show the sheet on tap
+                        }
                     }
             }
+            
         }
         .frame(width: 100, height: height*0.6)
-        .sheet(isPresented: $showLargeImage) {
-            EnlargedImageView(image: isUnlocked ? unlockedImage ?? placeholderIcon : placeholderIcon)
-        }
-    }
-}
-
-struct EnlargedImageView: View {
-    var image: UIImage
-
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.8).ignoresSafeArea()
-            
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .padding()
-                .shadow(radius: 10)
+        //.sheet(isPresented: $showLargeImage) {
+        //    EnlargedImageView(image: isUnlocked ? unlockedImage ?? placeholderIcon : placeholderIcon)
+        if showLargeImage {
+            EnlargedImageOverlay(image: placeholderIcon, isShowing: $showLargeImage)
         }
     }
 }
