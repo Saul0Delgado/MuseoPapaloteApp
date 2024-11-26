@@ -11,14 +11,14 @@ struct ViewAlmanaque: View {
     @State var secciones : [Seccion] = MuseoInfo.shared.secciones
     @State var isLoading = true
     @State var hasAppeared = false
+    @State var showARView = false
+    @State var showDinoGame = false
     @Environment(\.dismiss) var dismiss
     @ObservedObject var colorNavBar = NavBarColor.shared
     let topBarType : TopBarType
-    
-    
+
     var body: some View {
-        VStack{
-            
+        VStack {
             if isLoading {
                 //Loading
                 VStack {
@@ -39,60 +39,102 @@ struct ViewAlmanaque: View {
                 .safeAreaInset(edge: .top) {
                     PapaloteTopBar(color:Color(Color.accent), type: topBarType)
                 }
-            }
-            else{
+            } else {
                 ZStack {
                     Color.white
                         .ignoresSafeArea()
                     NavigationStack {
                         VStack {
                             ScrollView {
-                                
                                 Text("Zonas")
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .padding(.leading, 25)
                                     .padding(.top, 40.0)
                                     .padding(.bottom, 0)
-                                    .frame(maxWidth: .infinity,alignment: .leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
                                 ForEach(secciones, id: \.id) { item in
                                     NavigationLink(destination: ViewSeccion(seccion: item)) {
                                         ViewAlmanaqueSeccion(seccion: item)
                                     }
                                 }
+
+                                // AR Button
+                                Button(action: {
+                                    showARView = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "cube.transparent")
+                                            .font(.title2)
+                                        Text("Juego Decidir")
+                                            .font(.title3)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .padding()
+                                    .background(Color.accent)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                }
+                                .padding(.vertical, 10)
+
+                                // Dinosaur Game Button
+                                Button(action: {
+                                    showDinoGame = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "fossil.shell.fill")
+                                            .font(.title2)
+                                        Text("Juego Descubre")
+                                            .font(.title3)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .padding()
+                                    .background(Color.accent)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                }
+                                .padding(.vertical, 10)
+
                                 Rectangle()
                                     .fill(.clear)
-                                    .frame(height:120)
+                                    .frame(height: 120)
                             }
                         }
-                        //Top Bar
                         .safeAreaInset(edge: .top) {
-                            PapaloteTopBar(color:Color(Color.accent), type: topBarType)
+                            PapaloteTopBar(color: Color(Color.accent), type: topBarType)
                         }
+                    }
+                    .sheet(isPresented: $showARView) {
+                        ARViewContainer(onDismiss: {
+                            showARView = false
+                        })
+                    }
+                    .sheet(isPresented: $showDinoGame) {
+                        ContentViewDino()
+                            .ignoresSafeArea()  // Add this to ensure full screen coverage
+                            .onDisappear {
+                                showDinoGame = false
+                            }
                     }
                 }
             }
         }
-        
-        //Set navbar color
-        .onAppear{
+        .onAppear {
             colorNavBar.color = Color.accent
-            if !hasAppeared{
+            if !hasAppeared {
                 hasAppeared = true
                 
-                if secciones.count == 0{
+                if secciones.count == 0 {
                     // Secciones no ha cargado, fetch
                     print("Cargando Fetch por primera vez")
                     Task {
                         await MuseoInfo.shared.fetch(isLoading: $isLoading)
                         secciones = MuseoInfo.shared.secciones
                     }
-                    
-                }else{
+                } else {
                     print("Ya hay datos, no fetch")
-                    
                 }
-                
                 
                 isLoading = false
             }
@@ -107,36 +149,6 @@ struct ViewAlmanaque: View {
         )
         .navigationBarBackButtonHidden(true)
     }
-    
-    /*
-    func definirIconos(seccion: Binding<Seccion>) async {
-        print("Cargando almanaque para \(seccion.wrappedValue.nombre)...")
-        
-        for exhibicion in seccion.wrappedValue.exhibiciones {
-            
-            let hasObtainedIcon = await hasObtainedIcon(exhibicion_id: exhibicion.id)
-            
-            let icono = exhibicion.icono
-            
-
-            if let icono {
-                print("Icono encontrado para \(exhibicion.nombre)")
-                
-                if hasObtainedIcon{
-                    print("Icono obtenido!!")
-                    let newIcon = IconoAlmanaque(exhibicion: exhibicion, icono_name: icono)
-                    if seccion.wrappedValue.almanaque == nil {
-                        seccion.wrappedValue.almanaque = []
-                    }
-                    
-                    seccion.wrappedValue.almanaque?.append(newIcon)
-                }else{
-                    print("Icono no obtenido")
-                }
-            }
-        }
-    }
-    */
 }
 
 #Preview {
