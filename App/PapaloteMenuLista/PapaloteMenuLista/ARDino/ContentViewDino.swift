@@ -250,7 +250,7 @@ struct ScoreScreen: View {
                     .opacity(shineOpacity)
                     
                     // Badge image
-                    Image("badge_shop") // Make sure to add this image to your assets
+                    Image("badge_dino") // Make sure to add this image to your assets
                         .resizable()
                         .scaledToFit()
                         .frame(width: 120, height: 120)
@@ -301,7 +301,7 @@ struct ScoreScreen: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 40)
                     .padding(.vertical, 15)
-                    .background(Color.blue)
+                    .background(.accent)
                     .cornerRadius(15)
                     .shadow(radius: 5)
                 }
