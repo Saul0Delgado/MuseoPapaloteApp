@@ -31,6 +31,7 @@ struct ViewScanner: View {
                     
                     ScannerTutorial(isShowing: $firstLaunch)
                         .transition(.opacity)
+                        
                 }
             } else {
                 CameraViewControllerRepresentable(

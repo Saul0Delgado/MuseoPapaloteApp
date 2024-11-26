@@ -33,17 +33,17 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
         return button
     }()
     
-    // Results view to show matches
-    let resultsLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .black.withAlphaComponent(0.7)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.layer.cornerRadius = 10
-        label.layer.masksToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+//    // Results view to show matches
+//    let resultsLabel: UILabel = {
+//        let label = UILabel()
+//        label.backgroundColor = .black.withAlphaComponent(0.7)
+//        label.textColor = .white
+//        label.textAlignment = .center
+//        label.layer.cornerRadius = 10
+//        label.layer.masksToBounds = true
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        return label
+//    }()
 
     // CoreML model
     let model = try? PapaloteVision2(configuration: MLModelConfiguration())
@@ -63,12 +63,12 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
         captureButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         captureButton.addTarget(self, action: #selector(capturePhoto), for: .touchUpInside)
 
-        // Add and configure results label
-        view.addSubview(resultsLabel)
-        resultsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        resultsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        resultsLabel.bottomAnchor.constraint(equalTo: captureButton.topAnchor, constant: -20).isActive = true
-        resultsLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        // Add and configure results label
+//        view.addSubview(resultsLabel)
+//        resultsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//        resultsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+//        resultsLabel.bottomAnchor.constraint(equalTo: captureButton.topAnchor, constant: -20).isActive = true
+//        resultsLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
 
     func setupCamera() {
@@ -152,7 +152,7 @@ class CameraViewControllerTM: UIViewController, AVCapturePhotoCaptureDelegate {
             // Get the top classification result
             if let topResult = results.first {
                 DispatchQueue.main.async {
-                    self.resultsLabel.text = "Detected: \(topResult.identifier) (\(Int(topResult.confidence * 100))%)"
+//                    self.resultsLabel.text = "Detected: \(topResult.identifier) (\(Int(topResult.confidence * 100))%)"
                     if topResult.identifier == "Negative" || topResult.confidence < 0.95 {
                         self.onIconDetected?("No se encontró ningún ícono. Asegura de que el ícono esté claro y completo en la foto e intenta de nuevo.", image)
                     } else {

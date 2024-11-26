@@ -63,7 +63,7 @@ struct ViewMain: View {
                                     .resizable() // Make the icon resizable
                                     .background(Circle().fill(Color.white)) // Circular white background
                                     .scaledToFit() // Keep aspect ratio
-                                    .frame(width: 40, height: 40) // Set the size of the arrow
+                                    .frame(width: 45) // Set the size of the arrow
                                     .padding(25) // Add padding inside the circular background
                                     .foregroundColor(.accent) // Set the arrow color
                                 
@@ -80,16 +80,18 @@ struct ViewMain: View {
                             withAnimation {
                                 isShowingTutorial = true
                             }
-                        }) { HStack {
-                            Image(systemName: "questionmark.circle") // Back icon
-                                .resizable() // Make the icon resizable
-                                .background(Circle().fill(Color.accent)) // Circular white background
-                                .scaledToFit() // Keep aspect ratio
-                                .frame(width: 40, height: 40) // Set the size of the arrow
-                                .padding(25) // Add padding inside the circular background
-                                .foregroundColor(.white) // Set the arrow color
-                            
-                        }
+                        }) {
+                            ZStack{
+                                Circle()
+                                    .fill(.accent)
+                                    .frame(height: 45)
+                                Image(systemName: "questionmark")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height:20)
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(.trailing, 25)
                         }
                     }
                     Spacer() // Fills the remaining space below the button

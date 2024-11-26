@@ -42,6 +42,7 @@ struct ScannerTutorial : View {
                     HStack{
                         Text("Comenzar")
                             .foregroundStyle(.white)
+                            .font(.title2)
                             .fontWeight(.bold)
                         Spacer()
                             .frame(width:60)
@@ -51,15 +52,16 @@ struct ScannerTutorial : View {
                             .frame(height:25)
                             .foregroundStyle(.white)
                     }
-                    .frame(width: 200, height:60)
+                    .frame(width: 220, height:80)
                     .padding(.horizontal,40)
                     .background{
                         Color.accent
-                            .cornerRadius(30)
+                            .cornerRadius(20)
                     }
                 }
             }
             .frame(height:500)
+            .offset(y:50)
             
         }
     }
