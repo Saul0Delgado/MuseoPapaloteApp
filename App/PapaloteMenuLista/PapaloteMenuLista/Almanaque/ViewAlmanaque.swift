@@ -60,42 +60,6 @@ struct ViewAlmanaque: View {
                                     }
                                 }
 
-                                // AR Button
-                                Button(action: {
-                                    showARView = true
-                                }) {
-                                    HStack {
-                                        Image(systemName: "cube.transparent")
-                                            .font(.title2)
-                                        Text("Juego Decidir")
-                                            .font(.title3)
-                                            .fontWeight(.semibold)
-                                    }
-                                    .padding()
-                                    .background(Color.accent)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                }
-                                .padding(.vertical, 10)
-
-                                // Dinosaur Game Button
-                                Button(action: {
-                                    showDinoGame = true
-                                }) {
-                                    HStack {
-                                        Image(systemName: "fossil.shell.fill")
-                                            .font(.title2)
-                                        Text("Juego Descubre")
-                                            .font(.title3)
-                                            .fontWeight(.semibold)
-                                    }
-                                    .padding()
-                                    .background(Color.accent)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                }
-                                .padding(.vertical, 10)
-
                                 Rectangle()
                                     .fill(.clear)
                                     .frame(height: 120)
