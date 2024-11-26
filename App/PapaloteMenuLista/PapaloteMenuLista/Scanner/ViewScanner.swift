@@ -63,8 +63,9 @@ struct ViewScanner: View {
                     iconImage: iconImage,
                     isShowing: $showIconSheet
                 )
-                .presentationDetents([.medium]) // Customize to cover half the screen
-                .presentationDragIndicator(.visible) // Optional: Add drag indicator
+                .presentationDetents([.fraction(0.43)])
+                .presentationCornerRadius(30)
+                .presentationDragIndicator(.visible)
             }
         }
     }

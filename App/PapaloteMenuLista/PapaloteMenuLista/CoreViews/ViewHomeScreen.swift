@@ -15,6 +15,9 @@ struct ViewHomeScreen: View {
     let wholeScreen : CGFloat = UIScreen.main.bounds.width
     let elementHeight : CGFloat = 130
     
+    @State var showARView = false
+    @State var showDinoGame = false
+    
     //let noticias = Feed.getArticles()
     var noticias : [FeedArticle] = MuseoInfo.shared.Feed
     var exhibicionRecomendada : Exhibicion = MuseoInfo.shared.ExhibicionHomeScreen
@@ -126,6 +129,49 @@ struct ViewHomeScreen: View {
                         .offset(x:-leftPadding/2)
                         .shadow(radius: 8)
                         
+                        //Conocenos
+                        HStack {
+                            Text("Juegos ")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .padding(.top, 30)
+                            Spacer()
+                        }
+                        
+                        //Carrusel Noticias
+                        ScrollView(.horizontal, showsIndicators: false){
+                            HStack(spacing: 20) {
+                                
+                                //Espacio Vacío
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .frame(width:leftPadding/2-20)
+                            
+                                Button(action: {
+                                    
+                                }){
+                                    Text("Hola")
+                                        .foregroundStyle(.white)
+                                        .padding(.horizontal, 80)
+                                        .padding(.vertical, 40)
+                                        .background{
+                                            Color.accent
+                                                
+                                        }
+                                }
+                                
+                                
+                                
+                                //Espacio Vacío
+                                Rectangle()
+                                    .fill(Color.clear)
+                                    .frame(width:leftPadding-20)
+                                
+                            }
+                        }
+                        .offset(x:-leftPadding/2)
+                        .shadow(radius: 8)
+                        
                         //Toco juego y aprendo
                         Rectangle()
                             .fill(Color.clear)
@@ -151,6 +197,18 @@ struct ViewHomeScreen: View {
             }
             .onAppear{
                 colorNavBar.color = verdePapalote
+            }
+            .sheet(isPresented: $showARView) {
+                ARViewContainer(onDismiss: {
+                    showARView = false
+                })
+            }
+            .sheet(isPresented: $showDinoGame) {
+                ContentViewDino()
+                    .ignoresSafeArea()  // Add this to ensure full screen coverage
+                    .onDisappear {
+                        showDinoGame = false
+                    }
             }
         }
         .environment(\.colorScheme, .light)
