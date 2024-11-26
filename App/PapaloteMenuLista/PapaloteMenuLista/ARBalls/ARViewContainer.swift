@@ -111,27 +111,26 @@ class GameARView: ARView, ARSessionDelegate {
     }
     
     private let ballTypes: [BallType] = [
-
-                // Red category balls
-                BallType(textureName: "Takis", category: .red),    // Orange basketball
-                BallType(textureName: "Cheetos", category: .red),    // White/red volleyball
-                BallType(textureName: "Pepsi", category: .red),      // White baseball with red stitching
-                BallType(textureName: "Coca-Cola", category: .red),
-                BallType(textureName: "Nestle", category: .red),
-                BallType(textureName: "McDonalds", category: .red),
-                BallType(textureName: "Starbucks", category: .red),
-                BallType(textureName: "Monster", category: .red),
-    
-                // Blue category balls
-                BallType(textureName: "Manzana", category: .blue),       // Tennis ball (yellow-green)
-                BallType(textureName: "Naranja", category: .blue),       // Soccer ball (black/white)
-                BallType(textureName: "Ziploc", category: .blue),     // Golf ball (white)
-                BallType(textureName: "Clif Bar", category: .blue),
-                BallType(textureName: "Arroz", category: .blue),
-                BallType(textureName: "Miel", category: .blue),
-                BallType(textureName: "Avena", category: .blue),
-                BallType(textureName: "Ben & Jerrys", category: .blue),
-            ]
+        // Red category balls
+        BallType(textureName: "Takis", category: .red), // Orange basketball
+        BallType(textureName: "Cheetos", category: .red), // White/red volleyball
+        BallType(textureName: "Pepsi", category: .red), // White baseball with red stitching
+        BallType(textureName: "Coca-Cola", category: .red),
+        BallType(textureName: "Nestle", category: .red),
+        BallType(textureName: "McDonalds", category: .red),
+        BallType(textureName: "Starbucks", category: .red),
+        BallType(textureName: "Monster", category: .red),
+            
+        // Blue category balls
+        BallType(textureName: "Manzana", category: .blue), // Tennis ball (yellow-green)
+        BallType(textureName: "Naranja", category: .blue), // Soccer ball (black/white)
+        BallType(textureName: "Ziploc", category: .blue),  // Golf ball (white)
+        BallType(textureName: "Clif Bar", category: .blue),
+        BallType(textureName: "Arroz", category: .blue),
+        BallType(textureName: "Miel", category: .blue),
+        BallType(textureName: "Avena", category: .blue),
+        BallType(textureName: "Ben & Jerrys", category: .blue),
+    ]
     
     private var currentBallType: BallType!
     private var redCategoryBallsCaptured: Set<String> = []
