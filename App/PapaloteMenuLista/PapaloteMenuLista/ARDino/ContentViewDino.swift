@@ -225,9 +225,28 @@ struct ScoreScreen: View {
     @State private var badgeOpacity: Double = 0
     @State private var shineOpacity: Double = 0
     @State private var isFloating: Bool = false
+    @State private var hasRecordedBadge: Bool = false
     
     private var deservesBadge: Bool {
         correctAnswers >= 3
+    }
+    
+    private func InsertRegistro(user_id: UUID, exhibicion_id: Int) async {
+            let registro = RegistroAlmanaque(id_usuario: user_id, id_exhibicion: exhibicion_id)
+            
+            do {
+                try await supabase
+                    .from("RegistrosAlmanaque")
+                    .insert(registro)
+                    .execute()
+            } catch {
+                print("Error al insertar registro en la base de datos: \(error)")
+            }
+        }
+        
+    private struct RegistroAlmanaque: Encodable {
+        let id_usuario: UUID
+        let id_exhibicion: Int
     }
     
     var body: some View {
@@ -260,6 +279,15 @@ struct ScoreScreen: View {
                         .offset(y: isFloating ? -10 : 10)
                 } //ZStack
                 .frame(height: 160)
+                .onAppear {
+                        if deservesBadge && !hasRecordedBadge {
+                            // Record the badge achievement
+                            Task {
+                                await self.InsertRegistro(user_id: UserManage.loadActiveUser()?.userId ?? UUID(), exhibicion_id: 34)
+                                    print("Successfully recorded badge achievement")
+                            }
+                        }
+                    }
             } else {
                 // Original trophy/medal image for lower scores
                 Image(systemName: getScoreImage())

@@ -47,6 +47,27 @@ class GameARView: ARView, ARSessionDelegate {
         return material
     }()
     
+    func InsertRegistro(user_id: UUID, exhibicion_id: Int) async {
+        let registro = RegistroAlmanaque(id_usuario: user_id, id_exhibicion: exhibicion_id)
+        
+        do {
+            try await supabase
+                .from("RegistrosAlmanaque")
+                .insert(registro)
+                .execute()
+        }
+        catch {
+            print("Error al insertar registro en la base de datos: \(error)")
+        }
+    }
+    
+    struct RegistroAlmanaque: Encodable {
+        let id_usuario: UUID
+        let id_exhibicion: Int
+    }
+    
+    //38 decide, 34 aramberri
+    
     private lazy var blueMaterial: SimpleMaterial = {
         var material = SimpleMaterial()
         material.baseColor = MaterialColorParameter.color(.blue)
@@ -2100,8 +2121,13 @@ class GameARView: ARView, ARSessionDelegate {
             ) {
                 badgeImageView.alpha = 1
                 badgeImageView.transform = .identity
+                
+                Task {
+                    await self.InsertRegistro(user_id: UserManage.loadActiveUser()?.userId ?? UUID(), exhibicion_id: 38)
+                        print("Successfully recorded badge achievement")
+                }
             }
-            
+                
             // Update shine layer frame and start shine animation
             DispatchQueue.main.async {
                 shineLayer.frame = shineView.bounds
