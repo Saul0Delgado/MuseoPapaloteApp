@@ -147,18 +147,51 @@ struct ViewHomeScreen: View {
                                     .fill(Color.clear)
                                     .frame(width:leftPadding/2-20)
                             
+                                // AR Button
                                 Button(action: {
-                                    
-                                }){
-                                    Text("Hola")
-                                        .foregroundStyle(.white)
-                                        .padding(.horizontal, 80)
-                                        .padding(.vertical, 40)
-                                        .background{
-                                            Color.accent
-                                                
-                                        }
+                                    showARView = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "cube.transparent")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(height:50)
+                                            .padding(.trailing, 20)
+                                        Text("Decidir")
+                                            .font(.title)
+                                            .multilineTextAlignment(.leading)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .padding(.horizontal, 50)
+                                    .padding(.vertical, 30)
+                                    .background(Color.accent)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
                                 }
+                                .padding(.vertical, 10)
+                                
+                                // Dino Button
+                                Button(action: {
+                                    showDinoGame = true
+                                }) {
+                                    HStack {
+                                        Image(systemName: "fossil.shell.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(height:50)
+                                            .padding(.trailing, 20)
+                                        Text("Descubre")
+                                            .font(.title)
+                                            .multilineTextAlignment(.leading)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .padding(.horizontal, 50)
+                                    .padding(.vertical, 30)
+                                    .background(Color.accent)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                }
+                                .padding(.vertical, 10)
                                 
                                 
                                 
