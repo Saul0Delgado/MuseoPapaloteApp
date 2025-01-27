@@ -46,7 +46,7 @@ This is an app for the "Museo del Papalote" Papalote Museum in Monterrey Nuevo L
       <td align="center">
       <a href="https://github.com/gmujicap">
         <img src="https://avatars.githubusercontent.com/gmujicap" width="100px;" alt=""/>
-        <br /><sub><b>Leonardo Pequeño</b></sub>
+        <br /><sub><b>Gabriel Mujica</b></sub>
       </a>
       <br />
       <a style="padding-top: 40px;" href="https://github.com/gmujicap" title="GitHub"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"></a>
