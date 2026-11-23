@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 //Dinosaur Game Content View
 // GIFImageView Implementation
@@ -455,7 +456,6 @@ struct ConfettiView: View {
         let centerY = UIScreen.main.bounds.height / 2
 
         for _ in 0...150 {
-            let angle = Double.random(in: 0...2 * .pi)
             let velocity = Double.random(in: 10...20)
             let rotation = Double.random(in: 0...360)
             let particle = (
@@ -915,10 +915,11 @@ struct ContentViewDino: View {
     }
 
     // Include the getFeedbackMessage function
+    @ViewBuilder
     func getFeedbackMessage(for dinosaur: String) -> some View {
             switch dinosaur {
             case "Brachiosaurus":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Brachiosaurus")
                         .font(.title)
                         .bold()
@@ -938,7 +939,7 @@ struct ContentViewDino: View {
                 }
 
             case "Diplodocus":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Diplodocus")
                         .font(.title)
                         .bold()
@@ -958,7 +959,7 @@ struct ContentViewDino: View {
                 }
 
             case "Mosasaur":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Mosasaurio")
                         .font(.title)
                         .bold()
@@ -978,7 +979,7 @@ struct ContentViewDino: View {
                 }
 
             case "Parasaurolophus":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Parasaurolophus")
                         .font(.title)
                         .bold()
@@ -998,7 +999,7 @@ struct ContentViewDino: View {
                 }
 
             case "Pteranodon":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Pteranodon")
                         .font(.title)
                         .bold()
@@ -1018,7 +1019,7 @@ struct ContentViewDino: View {
                 }
 
             case "Spinosaurus":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Spinosaurio")
                         .font(.title)
                         .bold()
@@ -1038,7 +1039,7 @@ struct ContentViewDino: View {
                 }
 
             case "Stegosaurus":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Stegosaurus")
                         .font(.title)
                         .bold()
@@ -1058,7 +1059,7 @@ struct ContentViewDino: View {
                 }
 
             case "Triceratops":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Triceratops")
                         .font(.title)
                         .bold()
@@ -1078,7 +1079,7 @@ struct ContentViewDino: View {
                 }
 
             case "Velociraptor":
-                return VStack(spacing: 16) {
+                VStack(spacing: 16) {
                     Text("Velociraptor")
                         .font(.title)
                         .bold()
@@ -1098,7 +1099,7 @@ struct ContentViewDino: View {
                 }
 
             default:
-                return Text("Información no disponible")
+                Text("Información no disponible")
             }
         }
 }

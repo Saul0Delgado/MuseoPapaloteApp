@@ -3,10 +3,8 @@
 //  PapaloteMenuLista
 
 import SwiftUI
-import InteractiveMap
 
 struct ViewMapa: View {
-    @State private var selectedPath = PathData()
     @State private var pisoActual = "Piso1"
     @State private var mapID = UUID()
     
@@ -36,21 +34,18 @@ struct ViewMapa: View {
                     .padding()
                     .onChange(of: pisoActual) {
                         mapID = UUID()
-                        selectedPath = PathData()
                     }
-                    InteractiveMap(svgName: pisoActual) { pathData in
-                        if pathData.id != "Fondo" {
-                            InteractiveShape(pathData)
-                                .fill(getColor(for: pathData.id))
-                                .onTapGesture {
-                                    
-                                    if let zona = museoInfo.secciones.first(where: { $0.nombre == pathData.id }) {
-                                        selectedZona = zona
-                                        showDetailView = true
-                                    }
-                                }
+                    MapaSceneView(
+                        svgName: pisoActual,
+                        zonas: zonasInfo,
+                        colorPorDefecto: { UIColor(getColor(for: $0)) },
+                        onSelectZona: { id in
+                            if let zona = museoInfo.secciones.first(where: { $0.nombre == id }) {
+                                selectedZona = zona
+                                showDetailView = true
+                            }
                         }
-                    }
+                    )
                     .id(mapID)
                     
                     .padding()
@@ -96,6 +91,14 @@ struct ViewMapa: View {
     }
     
     
+    // Color y modelos 3D de cada zona, indexados por nombre de seccion
+    var zonasInfo: [String: MapaZonaInfo] {
+        Dictionary(museoInfo.secciones.map { zona in
+            (zona.nombre, MapaZonaInfo(color: UIColor(named: zona.color) ?? .gray,
+                                       modelos: zona.exhibiciones.compactMap { $0.model_file }))
+        }, uniquingKeysWith: { first, _ in first })
+    }
+
     // Obtener el color de la zona según el ID desde la "base de datos"
     func getColor(for id: String) -> Color {
         if let zona = museoInfo.secciones.first(where: { $0.nombre == id })  {

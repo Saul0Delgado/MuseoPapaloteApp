@@ -24,8 +24,6 @@ struct SceneModelView: UIViewRepresentable {
 
         // Intentar cargar el modelo 3D correspondiente
         if let objectNode = loadModel(named: modelName) {
-            objectNode.position = SCNVector3(0, 0, 0)
-            objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor(color)  // Color asignado
             sceneView.scene?.rootNode.addChildNode(objectNode)
         } else {
             print("⚠️ No se encontró el modelo: \(modelName)")
@@ -36,10 +34,9 @@ struct SceneModelView: UIViewRepresentable {
 
     func updateUIView(_ uiView: SCNView, context: Context) {
           // Reinicia la escena con un nuevo modelo si el nombre cambia
-          uiView.scene?.rootNode.childNodes.forEach { $0.removeFromParentNode() }
+          // Solo se reemplaza el modelo (la camara debe quedarse en la escena)
+          uiView.scene?.rootNode.childNode(withName: "modelo", recursively: false)?.removeFromParentNode()
           if let objectNode = loadModel(named: modelName) {
-              objectNode.position = SCNVector3(0, 0, 0)
-              objectNode.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
               uiView.scene?.rootNode.addChildNode(objectNode)
           }
       }
@@ -50,7 +47,32 @@ struct SceneModelView: UIViewRepresentable {
             print("⚠️ No se pudo cargar la escena para: \(name).dae")
             return nil
         }
-        return scene.rootNode.clone()
+
+        let content = scene.rootNode.clone()
+        content.enumerateHierarchy { child, _ in
+            child.light = nil
+            child.camera = nil
+        }
+
+        // Los .dae de Blender son Z-up y SceneKit no los convierte: se gira -90° en X para que queden de pie
+        let holder = SCNNode()
+        content.eulerAngles.x = -.pi / 2
+        holder.addChildNode(content)
+
+        // Se escala para que quepa en el encuadre y se centra en el origen
+        let (minB, maxB) = holder.boundingBox
+        let largest = max(maxB.x - minB.x, maxB.y - minB.y, maxB.z - minB.z)
+        guard largest > 0 else { return nil }
+        let scale = 12 / largest
+
+        let wrapper = SCNNode()
+        wrapper.name = "modelo"
+        holder.scale = SCNVector3(scale, scale, scale)
+        holder.position = SCNVector3(-(minB.x + maxB.x) / 2 * scale,
+                                     -(minB.y + maxB.y) / 2 * scale,
+                                     -(minB.z + maxB.z) / 2 * scale)
+        wrapper.addChildNode(holder)
+        return wrapper
     }
 }
 

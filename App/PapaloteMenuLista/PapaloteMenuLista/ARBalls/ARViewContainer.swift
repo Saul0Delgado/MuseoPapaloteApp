@@ -41,7 +41,7 @@ class GameARView: ARView, ARSessionDelegate {
     private var ballCountLabel: UILabel?
     private lazy var redMaterial: SimpleMaterial = {
         var material = SimpleMaterial()
-        material.baseColor = MaterialColorParameter.color(.red)
+        material.color = .init(tint: .red)
         material.roughness = 0.2
         material.metallic = 1.0
         return material
@@ -70,7 +70,7 @@ class GameARView: ARView, ARSessionDelegate {
     
     private lazy var blueMaterial: SimpleMaterial = {
         var material = SimpleMaterial()
-        material.baseColor = MaterialColorParameter.color(.blue)
+        material.color = .init(tint: .blue)
         material.roughness = 0.2
         material.metallic = 1.0
         return material
@@ -84,14 +84,14 @@ class GameARView: ARView, ARSessionDelegate {
             var material = SimpleMaterial()
             do {
                 let texture = try TextureResource.load(named: ballType.textureName)
-                material.baseColor = MaterialColorParameter.texture(texture)
+                material.color = .init(tint: .white, texture: .init(texture))
                 material.roughness = 0.2
                 material.metallic = 1.0
             } catch {
                 print("Failed to load texture for \(ballType.textureName): \(error)")
                 // Fallback color based on category
                 let fallbackColor: UIColor = ballType.category == .red ? .red : .blue
-                material.baseColor = MaterialColorParameter.color(fallbackColor)
+                material.color = .init(tint: fallbackColor)
             }
             materials[ballType.textureName] = material
         }
@@ -307,12 +307,15 @@ class GameARView: ARView, ARSessionDelegate {
         
         // Continue button
         let continueButton = UIButton(type: .system)
-        continueButton.setTitle("¡Comenzar!", for: .normal)
-        continueButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        var continueConfig = UIButton.Configuration.plain()
+        continueConfig.attributedTitle = AttributedString("¡Comenzar!", attributes: AttributeContainer([
+            .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+            .foregroundColor: UIColor.white
+        ]))
+        continueConfig.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 30, bottom: 15, trailing: 30)
+        continueButton.configuration = continueConfig
         continueButton.backgroundColor = .accent
-        continueButton.setTitleColor(.white, for: .normal)
         continueButton.layer.cornerRadius = 25
-        continueButton.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
         
         // Add tap handler
         continueButton.addAction(UIAction { [weak self] _ in
@@ -788,8 +791,8 @@ class GameARView: ARView, ARSessionDelegate {
     }
     
     private struct AssociatedKeys {
-        static var tapCallback = "tapCallback"
-        static var hasAnimated = "hasAnimated"
+        static var tapCallback: UInt8 = 0
+        static var hasAnimated: UInt8 = 0
     }
 
     private func createEnvironmentalImpactContainer(ball: (textureName: String, timestamp: Date), size: CGSize, index: Int, onTap: @escaping () -> Void) -> UIView {
@@ -1000,8 +1003,6 @@ class GameARView: ARView, ARSessionDelegate {
 
   // Helper function to calculate dynamic ball size based on number of balls
   private func calculateBallSize(for ballCount: Int) -> CGSize {
-      let screenWidth = bounds.width
-      let availableWidth = screenWidth * 0.8 // 80% of screen width
       
       switch ballCount {
       case 1:
@@ -1083,27 +1084,18 @@ class GameARView: ARView, ARSessionDelegate {
       let symbolConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
       let symbolImage = UIImage(systemName: symbolName, withConfiguration: symbolConfig)
       
-      // Create attachment for symbol
-      let imageAttachment = NSTextAttachment()
-      imageAttachment.image = symbolImage?.withTintColor(.white)
-      let imageString = NSAttributedString(attachment: imageAttachment)
-      
-      // Create title attributes
-      let titleAttributes: [NSAttributedString.Key: Any] = [
+      // Combine symbol and title using a button configuration
+      var config = UIButton.Configuration.plain()
+      config.image = symbolImage?.withTintColor(.white, renderingMode: .alwaysOriginal)
+      config.imagePadding = 6
+      config.attributedTitle = AttributedString(title, attributes: AttributeContainer([
           .font: UIFont.systemFont(ofSize: 20, weight: .bold),
           .foregroundColor: UIColor.white
-      ]
-      let titleString = NSAttributedString(string: " " + title, attributes: titleAttributes)
-      
-      // Combine symbol and title
-      let combinedString = NSMutableAttributedString()
-      combinedString.append(imageString)
-      combinedString.append(titleString)
-      
-      button.setAttributedTitle(combinedString, for: .normal)
+      ]))
+      config.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 40, bottom: 15, trailing: 40)
+      button.configuration = config
       button.backgroundColor = backgroundColor
       button.layer.cornerRadius = 15
-      button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 40, bottom: 15, right: 40)
       button.layer.shadowColor = UIColor.black.cgColor
       button.layer.shadowOffset = CGSize(width: 0, height: 2)
       button.layer.shadowRadius = 5

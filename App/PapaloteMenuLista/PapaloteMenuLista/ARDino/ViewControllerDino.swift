@@ -86,7 +86,7 @@ class ViewControllerDino: UIViewController, ARSCNViewDelegate {
     @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
         let location = gestureRecognizer.location(in: sceneView)
 
-        let hitResults = sceneView.hitTest(location, options: [SCNHitTestOption.rootNode: skullNode])
+        let hitResults = sceneView.hitTest(location, options: [SCNHitTestOption.rootNode: skullNode as SCNNode])
         if let hit = hitResults.first(where: { $0.node == overlayNode }) {
             print("Overlay node touched")
 

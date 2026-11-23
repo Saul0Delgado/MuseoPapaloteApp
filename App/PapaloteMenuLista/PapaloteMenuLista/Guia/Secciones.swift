@@ -4,7 +4,6 @@
 
 
 import Foundation
-import SwiftUICore
 import SwiftUI
 import PostgREST
 

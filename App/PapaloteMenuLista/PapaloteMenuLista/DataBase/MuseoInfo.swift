@@ -15,6 +15,7 @@ class MuseoInfo: ObservableObject {
     @Published var ExhibicionHomeScreen : Exhibicion = Exhibicion(id: 0, nombre: "ERROR", desc: "Error fetching exhibicion", especial: false, featured: false, objetivos: [], preguntas: [], datosCuriosos: [], interaccion: [])
     @Published var Feed : [FeedArticle] = []
     
+    @MainActor
     public func fetch(isLoading: Binding<Bool>, animated: Bool = false) async {
         isLoading.wrappedValue = true
         print("⏳ Starting data fetch for MuseoInfo...")
